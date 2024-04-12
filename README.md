@@ -1,6 +1,6 @@
 # Univ'Adventure
 
-**Univ'Adventure** est une application mobile Android conçue pour enrichir l'expérience des étudiants universitaires en explorant et en s'engageant avec leur campus d'une manière ludique et informative. Développée en Kotlin, cette application utilise une architecture robuste MVVM pour assurer une expérience utilisateur fluide et réactive.
+**Univ'Adventure** est une application mobile Android conçue pour enrichir l'expérience des étudiants universitaires en explorant et en s'engageant avec leur campus d'une manière ludique et informative. 
 
 ## Fonctionnalités principales
 

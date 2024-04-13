@@ -1,0 +1,14 @@
+[
+    {
+      "name": "Point d'intérêt 1",
+      "description": "Description du point d'intérêt 1",
+      "latitude": 48.44645,
+      "longitude": -1.566
+    },
+    {
+      "name": "Point d'intérêt 2",
+      "description": "Description du point d'intérêt 2",
+      "latitude": 48.11739072417471,
+      "longitude": -1.6383751048627655
+    }
+]

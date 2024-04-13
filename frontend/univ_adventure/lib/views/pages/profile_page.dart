@@ -3,7 +3,6 @@ import 'package:univ_adventure/services/user_manager.dart';
 import '../../models/user.dart';
 import 'package:intl/intl.dart';
 
-
 class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -18,14 +17,13 @@ class ProfilePage extends StatelessWidget {
           User? user = snapshot.data;
           if (user == null) {
             return Text('Aucun utilisateur trouvé');
-          }
-          else {
+          } else {
             print(user.profilePicture);
           }
           return Scaffold(
             appBar: AppBar(
               title: const Text('Profile'),
-              backgroundColor: Colors.teal,
+              backgroundColor: Color.fromRGBO(0, 113, 61, 1),
               elevation: 0,
             ),
             body: SingleChildScrollView(
@@ -33,12 +31,14 @@ class ProfilePage extends StatelessWidget {
                 children: [
                   Container(
                     width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Colors.teal,
-                      borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
+                    decoration: const BoxDecoration(
+                      color: Color.fromRGBO(0, 113, 61, 1),
+                      borderRadius:
+                          BorderRadius.vertical(bottom: Radius.circular(20)),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 20, horizontal: 20),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -47,9 +47,11 @@ class ProfilePage extends StatelessWidget {
                             children: [
                               CircleAvatar(
                                 radius: 50,
-                                backgroundImage: user.profilePicture == '' 
-                                  ? const AssetImage('assets/images/defaultProfile.jpg') 
-                                  : NetworkImage(user.profilePicture) as ImageProvider<Object>?,
+                                backgroundImage: user.profilePicture == ''
+                                    ? const AssetImage(
+                                        'assets/images/defaultProfile.jpg')
+                                    : NetworkImage(user.profilePicture)
+                                        as ImageProvider<Object>?,
                                 backgroundColor: Colors.white,
                               ),
                               SizedBox(width: 20),
@@ -57,14 +59,22 @@ class ProfilePage extends StatelessWidget {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(user.name, style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)),
-                                    Text(user.email, style: TextStyle(color: Colors.white70, fontSize: 18)),
+                                    Text(user.name,
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.bold)),
+                                    Text(user.email,
+                                        style: TextStyle(
+                                            color: Colors.white70,
+                                            fontSize: 18)),
                                   ],
                                 ),
                               ),
                               IconButton(
                                 icon: Icon(Icons.edit, color: Colors.white),
-                                onPressed: () {}, // TODO: Implement profile editing functionality
+                                onPressed:
+                                    () {}, // TODO: Implement profile editing functionality
                               ),
                             ],
                           ),
@@ -81,10 +91,20 @@ class ProfilePage extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            InfoTile(label: "Date de création", value: DateFormat('dd-MM-yyyy').format(user.createdAt)),
-                            InfoTile(label: "Points", value: user.points.toString()),
-                            InfoTile(label: "Quêtes complétées", value: user.questsCompleted.length.toString()),
-                            InfoTile(label: "Badges", value: user.badges.join(", ").isEmpty ? "Aucun" : user.badges.join(", ")),
+                            InfoTile(
+                                label: "Date de création",
+                                value: DateFormat('dd-MM-yyyy')
+                                    .format(user.createdAt)),
+                            InfoTile(
+                                label: "Points", value: user.points.toString()),
+                            InfoTile(
+                                label: "Quêtes complétées",
+                                value: user.questsCompleted.length.toString()),
+                            InfoTile(
+                                label: "Badges",
+                                value: user.badges.join(", ").isEmpty
+                                    ? "Aucun"
+                                    : user.badges.join(", ")),
                           ],
                         ),
                       ),
@@ -98,10 +118,7 @@ class ProfilePage extends StatelessWidget {
       },
     );
   }
-
-  
 }
-
 
 class InfoTile extends StatelessWidget {
   final String label;
@@ -119,7 +136,9 @@ class InfoTile extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
         children: [
-          Expanded(child: Text(label, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))),
+          Expanded(
+              child: Text(label,
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))),
           Text(value, style: TextStyle(fontSize: 16)),
         ],
       ),

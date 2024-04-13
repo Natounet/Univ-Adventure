@@ -12,7 +12,7 @@ class News {
   final dynamic startTime;
   final dynamic endTime;
   final String article;
-  final Optional<Image> image;
+  final Optional<String> image;
 
   News({
     required this.newsId,
@@ -29,7 +29,7 @@ class News {
   factory News.fromJson(Map<String, dynamic> json) {
     return News(
       image: json['image'] != null
-          ? Optional.of(Image.asset(json['image']))
+          ? Optional.of(json['image'])
           : const Optional.empty(),
       article: json['article'],
       newsId: json['newsId'],

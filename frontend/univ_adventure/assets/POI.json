@@ -1,14 +1,20 @@
 [
     {
-      "name": "Point d'intérêt 1",
-      "description": "Description du point d'intérêt 1",
-      "latitude": 48.44645,
-      "longitude": -1.566
+      "name": "ISTIC",
+      "description": "La fac d'Informatique-Electronique de l'université de Rennes",
+      "latitude": 48.115727590042624, 
+      "longitude": -1.6386050047936813
     },
     {
-      "name": "Point d'intérêt 2",
-      "description": "Description du point d'intérêt 2",
-      "latitude": 48.11739072417471,
-      "longitude": -1.6383751048627655
+      "name": "RU Astrolab",
+      "description": "Le restaurant universitaire du camus de beaulieu, ouvert le midi dès 11h15",
+      "latitude": 48.11855887405242,
+      "longitude": -1.6358394006253518
+    },
+    {
+      "name": "RU INSA",
+      "description": "Le restaurant universitaire de l'INSA, ouvert le midi ET le soir !",
+      "latitude": 48.12189137812646,
+      "longitude": -1.6374415345306144
     }
 ]

@@ -1,8 +1,5 @@
 // lib/views/pages/map_page.dart
-import 'dart:js_util';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'dart:convert' show json;
@@ -20,18 +17,17 @@ class _MapPageState extends State<MapPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Map'),
+        title: const Text('Carte du campus de Beaulieu'),
       ),
-      body: FutureBuilder<List<CustomMarker>>(
+      body: FutureBuilder<List<Marker>>(
         future: getMarkersFromJson(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return FlutterMap(
-              options: MapOptions(
-                  initialCenter:
-                      const LatLng(48.11739072417471, -1.6383751048627655),
-                  initialZoom: 16.0,
-                  onTap: (tapPosition, point) => print(snapshot.data!)),
+              options: const MapOptions(
+                initialCenter: LatLng(48.11739072417471, -1.6383751048627655),
+                initialZoom: 16.0,
+              ),
               children: [
                 TileLayer(
                   urlTemplate:

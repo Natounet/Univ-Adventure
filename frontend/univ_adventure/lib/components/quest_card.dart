@@ -4,14 +4,16 @@ import '../models/quests.dart'; // Assurez-vous que le chemin d'accès au modèl
 class QuestCard extends StatelessWidget {
   final Quest quest;
   final VoidCallback onTap;
+  final bool isCompleted;
 
-  QuestCard({required this.quest, required this.onTap});
+  QuestCard({required this.quest, required this.onTap, this.isCompleted = false});
 
   @override
   Widget build(BuildContext context) {
     return Card(
       elevation: 4.0,
       margin: EdgeInsets.all(8.0),
+      color: isCompleted ? Colors.grey : null,
       child: InkWell(
         onTap: onTap,
         child: Container(

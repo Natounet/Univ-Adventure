@@ -26,6 +26,7 @@ class QuestPage extends StatelessWidget {
                     builder: (context) => QuestDetailPage(quest: quest, user: UserManager.getUser()!),
                   ),
                 ),
+                isCompleted: UserManager.getUser()!.questsCompleted.contains(quest.questId),
               )).toList(),
             );
           } else {

@@ -11,12 +11,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 2;
   final List<Widget> _pages = [
-    QuestPage(),
-    ChatPage(),
-    MapPage(),
     NewsPage(),
+    QuestPage(),
+    MapPage(),
+    ChatPage(),
     ProfilePage(),
   ];
 
@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage> {
             icon: Icon(Icons.view_list_rounded),
             label: 'Quests',
           ),
-            BottomNavigationBarItem(
+          BottomNavigationBarItem(
             icon: Icon(Icons.map),
             label: 'Map',
           ),
@@ -50,9 +50,6 @@ class _HomePageState extends State<HomePage> {
             icon: Icon(Icons.sms),
             label: 'Chat',
           ),
-         
-          
-         
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
             label: 'Profile',

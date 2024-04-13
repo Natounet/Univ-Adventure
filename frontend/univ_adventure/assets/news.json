@@ -1,7 +1,7 @@
 [
     {
-        "newsId": "k,ss",
-        "title": "aigriman retrouvé",
+        "newsId": "1",
+        "title": "hacktafac",
         "description": "lors de ce hackaton nous avons retrouvé aigriman",
         "location": {
             "name": "Lac de l'ISTIC",
@@ -11,112 +11,97 @@
         "date": "2021-03-01",
         "startTime": 1,
         "endTime": 1,
-        "image": "https://domotique.istic.univ-rennes1.fr/user/pages/footer/istic.png",
-        "article": "nathan est aigris nous l'avons retrouvé !!!!"
+        "image": "https://media.discordapp.net/attachments/1042850120745631846/1228715964376420493/Capture_decran_du_2024-04-13_16-34-24.png?ex=662d0dea&is=661a98ea&hm=460b5fb97834169c699e5076a4dcc8bfdc217f699edd04a4a596eebf4996b76d&=&format=webp&quality=lossless",
+        "article": "Hack Ta Fac c'est 24 heures pour trouver une idée d'outil numérique qui permettra de révolutionner une thématique de société. Le 12 avril à 18h30, on vous révèlera un thème et vous aurez jusqu'au lendemain à la même heure pour trouver une idée d'outil numérique, et réaliser un prototype. À la fin, vous présenterez votre projet en quelques minutes devant les autres équipes et un jury. Vous ne connaissez rien à la programmation, pire, ça vous ennuie profondément ? Mais avez-vous testé cette discipline en dehors des cours ? Croyez-nous, un hackathon, c'est le genre d'expérience à vivre au moins une fois dans sa vie, et qui vous fera changer d'avis. En plus, aucune compétence n'est requise pour terminer sur le podium : des coachs sont là pour vous guider, et le barème de notation est pensé pour favoriser l'idée et la présentation plutôt que la technique. Alors, prêt à relever le défi ?"
     },
     {
-        "newsId": "k,ss",
-        "title": "aigriman retrouvé",
-        "description": "lors de ce hackaton nous avons retrouvé aigriman",
+        "newsId": "abc123",
+        "title": "Nouvelle découverte",
+        "description": "Des chercheurs annoncent une nouvelle découverte révolutionnaire",
         "location": {
-            "name": "Lac de l'ISTIC",
-            "latitude": 48.115367,
-            "longitude": -1.637839
+            "name": "Laboratoire XYZ",
+            "latitude": 12.3456,
+            "longitude": -78.9012
         },
-        "date": "2021-03-01",
-        "startTime": 1,
-        "endTime": 1,
-        "image": null,
-        "article": "nathan est aigris nous l'avons retrouvé !!!!"
+        "date": "2021-04-10",
+        "startTime": 9,
+        "endTime": 12,
+        "image": "http://www.eplucheur-commercial.fr/blog/Action-commerciale/Negociation-commerciale/_IMAGES2_/Images/decouverte-clients-600_397.jpg",
+        "article": "Le laboratoire XYZ annonce une découverte qui pourrait changer le monde."
     },
     {
-        "newsId": "k,ss",
-        "title": "aigriman retrouvé",
-        "description": "lors de ce hackaton nous avons retrouvé aigriman",
+        "newsId": "def456",
+        "title": "Événement sportif",
+        "description": "Un événement sportif majeur se déroulera ce week-end",
         "location": {
-            "name": "Lac de l'ISTIC",
-            "latitude": 48.115367,
-            "longitude": -1.637839
+            "name": "Stade Municipal",
+            "latitude": 23.4567,
+            "longitude": -45.6789
         },
-        "date": "2021-03-01",
-        "startTime": 1,
-        "endTime": 1,
-        "image": null,
-        "article": "nathan est aigris nous l'avons retrouvé !!!!"
+        "date": "2021-05-15",
+        "startTime": 14,
+        "endTime": 18,
+        "image": "https://img.freepik.com/photos-gratuite/outils-sport_53876-138077.jpg?size=626&ext=jpg",
+        "article": "Les amateurs de sport sont invités à assister à cet événement excitant."
     },
     {
-        "newsId": "k,ss",
-        "title": "aigriman retrouvé",
-        "description": "lors de ce hackaton nous avons retrouvé aigriman",
+        "newsId": "ghi789",
+        "title": "Lancement d'un nouveau produit",
+        "description": "Une entreprise annonce le lancement d'un produit innovant",
         "location": {
-            "name": "Lac de l'ISTIC",
-            "latitude": 48.115367,
-            "longitude": -1.637839
+            "name": "Siège de l'entreprise",
+            "latitude": 56.7890,
+            "longitude": -12.3456
         },
-        "date": "2021-03-01",
-        "startTime": 1,
-        "endTime": 1,
-        "image": null,
-        "article": "nathan est aigris nous l'avons retrouvé !!!!"
+        "date": "2021-06-20",
+        "startTime": 10,
+        "endTime": 14,
+        "image": "https://www.delcourt.fr/img/cms/visuel2-article-classification-produits-entretien-delcourt-fr-min.jpg",
+        "article": "L'entreprise XYZ dévoile son dernier produit révolutionnaire au monde."
     },
     {
-        "newsId": "k,ss",
-        "title": "aigriman retrouvé",
-        "description": "lors de ce hackaton nous avons retrouvé aigriman",
+        "newsId": "jkl012",
+        "title": "Défilé de mode",
+        "description": "Un défilé de mode aura lieu dans le quartier chic de la ville",
         "location": {
-            "name": "Lac de l'ISTIC",
-            "latitude": 48.115367,
-            "longitude": -1.637839
+            "name": "Centre des congrès",
+            "latitude": 34.5678,
+            "longitude": -90.1234
         },
-        "date": "2021-03-01",
-        "startTime": 1,
-        "endTime": 1,
-        "image": null,
-        "article": "nathan est aigris nous l'avons retrouvé !!!!"
+        "date": "2021-07-30",
+        "startTime": 19,
+        "endTime": 22,
+        "image": "https://images.ladepeche.fr/api/v1/images/view/5e5fd2ce8fe56f08616e2346/large/image.jpg?v=1",
+        "article": "Les créateurs de mode présentent leurs dernières collections lors de cet événement glamour."
     },
     {
-        "newsId": "k,ss",
-        "title": "aigriman retrouvé",
-        "description": "lors de ce hackaton nous avons retrouvé aigriman",
+        "newsId": "mno345",
+        "title": "Conférence sur la technologie",
+        "description": "Une conférence sur les dernières avancées technologiques se tiendra cette semaine",
         "location": {
-            "name": "Lac de l'ISTIC",
-            "latitude": 48.115367,
-            "longitude": -1.637839
+            "name": "Centre des congrès",
+            "latitude": 34.5678,
+            "longitude": -90.1234
         },
-        "date": "2021-03-01",
-        "startTime": 1,
-        "endTime": 1,
-        "image": null,
-        "article": "nathan est aigris nous l'avons retrouvé !!!!"
+        "date": "2021-08-25",
+        "startTime": 9,
+        "endTime": 17,
+        "image": "https://www.zdnet.fr/wp-content/uploads/zdnet/2024/02/technologie-1-750x410.jpg",
+        "article": "Des experts de l'industrie partageront leurs connaissances sur les tendances technologiques émergentes."
     },
     {
-        "newsId": "k,ss",
-        "title": "aigriman retrouvé",
-        "description": "lors de ce hackaton nous avons retrouvé aigriman",
+        "newsId": "pqr678",
+        "title": "Nouvelle ouverture de magasin",
+        "description": "Une nouvelle boutique ouvre ses portes dans le centre commercial",
         "location": {
-            "name": "Lac de l'ISTIC",
-            "latitude": 48.115367,
-            "longitude": -1.637839
+            "name": "Centre commercial",
+            "latitude": 45.6789,
+            "longitude": -23.4567
         },
-        "date": "2021-03-01",
-        "startTime": 1,
-        "endTime": 1,
-        "image": null,
-        "article": "nathan est aigris nous l'avons retrouvé !!!!"
-    },
-    {
-        "newsId": "k,ss",
-        "title": "aigriman retrouvé",
-        "description": "lors de ce hackaton nous avons retrouvé aigriman",
-        "location": {
-            "name": "Lac de l'ISTIC",
-            "latitude": 48.115367,
-            "longitude": -1.637839
-        },
-        "date": "2021-03-01",
-        "startTime": 1,
-        "endTime": 1,
-        "image": null,
-        "article": "nathan est aigris nous l'avons retrouvé !!!!"
+        "date": "2021-09-15",
+        "startTime": 10,
+        "endTime": 20,
+        "image": "https://www.michel-edouard-leclerc.com/sites/default/files/2017-06/Pure%20players%20MEL%20Ouverture.JPG",
+        "article": "Les clients sont invités à découvrir la nouvelle boutique et à profiter des offres spéciales de lancement."
     }
 ]

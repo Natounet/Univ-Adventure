@@ -14,26 +14,40 @@ class _SignupPageState extends State<SignupPage> {
   String _email = '';
 
   void _trySubmitForm() async {
-    final isValid = _formKey.currentState?.validate();
-    print('Form is valid: $isValid');
+  final isValid = _formKey.currentState?.validate();
+  print('Formulaire invalide: $isValid');
 
-    if (isValid == true) {
-      _formKey.currentState?.save();
-      print('Name: $_name, Email: $_email');
+  if (isValid == true) {
+    _formKey.currentState?.save();
+    print('Nom: $_name, Email: $_email');
 
-      User newUser = User(
-          createdAt: DateTime.now(),
-          email: _email,
-          name: _name,
-          userId: 1,
-          profilePicture: '');
-      UserManager.addUser(newUser);
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => HomePage()));
-    } else {
-      print('Form is not valid');
-    }
+    User newUser = User(
+        createdAt: DateTime.now(),
+        email: _email,
+        name: _name,
+        userId: 1,
+        profilePicture: '');
+    UserManager.addUser(newUser);
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => HomePage()));
+  } else {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text('Formulaire invalide'),
+        content: Text('Veuillez entrer un nom et une adresse mail universitaire valide. (prenom.nom@etudiant.univ-rennes.fr)'),
+        actions: <Widget>[
+          TextButton(
+            child: Text('Okay'),
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
+          ),
+        ],
+      ),
+    );
   }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -47,10 +61,10 @@ class _SignupPageState extends State<SignupPage> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               TextFormField(
-                decoration: InputDecoration(labelText: 'Name'),
+                decoration: InputDecoration(labelText: 'Nom'),
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
-                    return 'Please enter your name';
+                    return 'Veuillez entrer votre nom';
                   }
                   return null;
                 },
@@ -60,10 +74,10 @@ class _SignupPageState extends State<SignupPage> {
                 decoration: InputDecoration(labelText: 'Email'),
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
-                    return 'Please enter your email';
+                    return 'Veuillez entrer votre adresse mail étudiante';
                   }
-                  if (!value.contains('@')) {
-                    return 'Please enter a valid email';
+                  if (!RegExp(r'^[a-zA-Z0-9.]+@etudiant\.univ-rennes\.fr$').hasMatch(value)) {
+                    return 'Veuillez entrer une adresse mail valide';
                   }
                   return null;
                 },
@@ -72,7 +86,7 @@ class _SignupPageState extends State<SignupPage> {
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _trySubmitForm,
-                child: Text('Submit'),
+                child: Text('Envoyer'),
               ),
             ],
           ),

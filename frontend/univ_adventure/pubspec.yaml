@@ -16,7 +16,8 @@ dependencies:
   permission_handler: ^11.3.1
   flutter_svg: ^0.22.0
   optional: ^6.1.0+1
-
+  shared_preferences: ^2.0.6
+  rxdart: ^0.27.7
 
 dev_dependencies:
   flutter_test:

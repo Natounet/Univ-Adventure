@@ -26,7 +26,7 @@ class _SignupPageState extends State<SignupPage> {
           email: _email,
           name: _name,
           userId: 1,
-          profilePicture: 'https://example.com/image.jpg');
+          profilePicture: '');
       UserManager.addUser(newUser);
       Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => HomePage()));

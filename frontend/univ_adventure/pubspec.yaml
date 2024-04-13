@@ -19,6 +19,7 @@ dependencies:
   flutter_map_marker_popup: ^6.1.2
   shared_preferences: ^2.0.6
   rxdart: ^0.27.7
+  intl: ^0.19.0
 
 dev_dependencies:
   flutter_test:
@@ -34,3 +35,4 @@ flutter:
     - assets/quests.json
     - assets/images/backgroundProfile.png
     - assets/news.json
+    - assets/images/

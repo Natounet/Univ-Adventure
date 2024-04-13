@@ -1,8 +1,8 @@
-// lib/views/pages/profile_page.dart
-
 import 'package:flutter/material.dart';
 import 'package:univ_adventure/services/user_manager.dart';
 import '../../models/user.dart';
+import 'package:intl/intl.dart';
+
 
 class ProfilePage extends StatelessWidget {
   @override
@@ -19,95 +19,110 @@ class ProfilePage extends StatelessWidget {
           if (user == null) {
             return Text('Aucun utilisateur trouvé');
           }
+          else {
+            print(user.profilePicture);
+          }
           return Scaffold(
             appBar: AppBar(
               title: const Text('Profile'),
-              backgroundColor: const Color.fromRGBO(182, 196, 182, 1),
+              backgroundColor: Colors.teal,
+              elevation: 0,
             ),
-            body: Align(
-              alignment: Alignment.topLeft,
-              child: Container(
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/images/backgroundProfile.png'),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(children: [
-                        Container(
-                          width: 100.0,
-                          height: 100.0,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                              image: NetworkImage(user.profilePicture),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () {},
-                          child: const Text('Modifier'),
-                        )
-                      ]),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 10.0), // Add left padding
-                        child: ConstrainedBox(
-                          constraints: const BoxConstraints.tightFor(
-                            height: 200,
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment
-                                .start, // Align texts to the top
-                            crossAxisAlignment: CrossAxisAlignment
-                                .start, // Align texts to the left
+            body: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.teal,
+                      borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    bottom: 5.0), // Add bottom padding
-                                child: Text('Nom: ${user.name}',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold)),
+                              CircleAvatar(
+                                radius: 50,
+                                backgroundImage: user.profilePicture == '' 
+                                  ? const AssetImage('assets/images/defaultProfile.jpg') 
+                                  : NetworkImage(user.profilePicture) as ImageProvider<Object>?,
+                                backgroundColor: Colors.white,
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    bottom: 5.0), // Add bottom padding
-                                child: Text('Email: ${user.email}',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold)),
+                              SizedBox(width: 20),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(user.name, style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)),
+                                    Text(user.email, style: TextStyle(color: Colors.white70, fontSize: 18)),
+                                  ],
+                                ),
                               ),
-                              Text('Date de création: ${user.createdAt}',
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
-                              Text("Points: ${user.points}",
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
-                              Text(
-                                  "Quêtes complétées: ${user.questsCompleted.length}",
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
-                              Text(
-                                  "Badges: ${user.badges.join(",").isEmpty ? "Aucun" : user.badges.join(" - ")}",
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
+                              IconButton(
+                                icon: Icon(Icons.edit, color: Colors.white),
+                                onPressed: () {}, // TODO: Implement profile editing functionality
+                              ),
                             ],
                           ),
-                        ),
-                      )
-                    ],
+                        ],
+                      ),
+                    ),
                   ),
-                ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Card(
+                      elevation: 4,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            InfoTile(label: "Date de création", value: DateFormat('dd-MM-yyyy').format(user.createdAt)),
+                            InfoTile(label: "Points", value: user.points.toString()),
+                            InfoTile(label: "Quêtes complétées", value: user.questsCompleted.length.toString()),
+                            InfoTile(label: "Badges", value: user.badges.join(", ").isEmpty ? "Aucun" : user.badges.join(", ")),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           );
         }
       },
+    );
+  }
+
+  
+}
+
+
+class InfoTile extends StatelessWidget {
+  final String label;
+  final String value;
+
+  const InfoTile({
+    Key? key,
+    required this.label,
+    required this.value,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Row(
+        children: [
+          Expanded(child: Text(label, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))),
+          Text(value, style: TextStyle(fontSize: 16)),
+        ],
+      ),
     );
   }
 }

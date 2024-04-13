@@ -1,0 +1,20 @@
+[
+    {
+        "questId": "lac-oconnard",
+        "title": "La quête du lac au connard",
+        "description": "Trouve notre fameux lac aux connards",
+        "location": {
+            "latitude": 48.115379,
+            "longitude": 1.637839
+        },
+        "isActive": true,
+        "qrCode": "some_qr_code",
+        "method": "qrcode",
+        "startTime": null,
+        "endTime": null,
+        "rewards": {
+            "badges": ["Canard"],
+            "points": 100
+        }
+    }
+]

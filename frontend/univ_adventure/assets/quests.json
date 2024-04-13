@@ -16,5 +16,23 @@
             "badges": ["Canard"],
             "points": 100
         }
+    },
+    {
+        "questId": "remi_canard",
+        "title": "Il faut sauver le soldat Remi",
+        "description": "Récupère Alix",
+        "location": {
+            "latitude": 48.115379,
+            "longitude": 1.637839
+        },
+        "isActive": true,
+        "qrCode": "some_qr_code",
+        "method": "qrcode",
+        "startTime": null,
+        "endTime": null,
+        "rewards": {
+            "badges": ["Canard"],
+            "points": 100
+        }
     }
 ]

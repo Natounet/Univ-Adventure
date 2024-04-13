@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:geolocator/geolocator.dart';
 import '../../models/quests.dart';
 
 import 'package:permission_handler/permission_handler.dart';
+
 
 void requestCameraPermission() async {
   var status = await Permission.camera.status;
@@ -20,52 +23,110 @@ class QuestDetailPage extends StatelessWidget {
 
   QuestDetailPage({required this.quest});
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(quest.title),
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      title: Text(quest.title),
+    ),
+    body: SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Description de la quête :",
+                  style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 10.0), // Espacement entre le titre et la description
+                Text(
+                  quest.description,
+                  style: TextStyle(fontSize: 18.0),
+                ),
+              ],
+            ),
+          ),
+          if (quest.method == "location")
+            Container(
+              height: 300.0,
+              child: FlutterMap(
+                options: MapOptions(
+                  initialCenter: LatLng(quest.location.latitude, quest.location.longitude!),
+                  initialZoom: 15.0,
+                ),
+                children: [
+                  TileLayer(
+                    urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                    subdomains: ['a', 'b', 'c'],
+                  ),
+                  MarkerLayer(
+                    markers: [
+                      Marker(
+                        width: 80.0,
+                        height: 80.0,
+                        point: LatLng(quest.location.latitude, quest.location.longitude),
+                        child: Container(
+                          child: Icon(Icons.location_on, size: 40.0, color: Colors.red),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+        ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(quest.title,
-                style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold)),
-            SizedBox(height: 20),
-            Text(quest.description, style: TextStyle(fontSize: 18.0)),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () => _handleQuestValidation(context),
-              child: Text('Valider la quête'),
+    ),
+    bottomNavigationBar: BottomAppBar(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        child: ElevatedButton(
+          onPressed: () => _handleQuestValidation(context),
+          child: Text('Valider la quête'),
+        ),
+      ),
+    ),
+  );
+}
+
+  void _handleQuestValidation(BuildContext context) async {
+  if (quest.method == "qrcode") {
+    requestCameraPermission();
+    String? result = await scanner.scan();
+    if (result != null && result == quest.qrCode) {
+      // Gestion du succès du scan QR
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text("Bien joué !"),
+          content: Text("Le QR code est correct!"),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text("OK"),
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  void _handleQuestValidation(BuildContext context) async {
-    if (quest.method == "qrcode") {
-      requestCameraPermission() ;
-      String? result = await scanner.scan();
-      if (result != null && result == quest.qrCode) {
-        // Gestion du succès du scan QR
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text("Succès"),
-            content: Text("Le QR code est correct!"),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: Text("OK"),
-              ),
-            ],
-          ),
-        );
-      }
+      );
+    } else {
+      // Gestion de l'échec du scan QR
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text("C'est raté !"),
+          content: Text("Le QR code est incorrect."),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text("OK"),
+            ),
+          ],
+        ),
+      );
+    }
     } else if (quest.method == "location") {
       Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);

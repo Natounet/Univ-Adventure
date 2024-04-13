@@ -24,3 +24,4 @@ flutter:
   assets:
     - assets/POI.json
     - assets/quests.json
+    - assets/images/backgroundProfile.png

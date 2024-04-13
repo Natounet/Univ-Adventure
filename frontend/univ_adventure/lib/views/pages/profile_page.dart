@@ -1,23 +1,24 @@
 // lib/views/pages/profile_page.dart
-import 'package:flutter/foundation.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class ProfilePage extends StatelessWidget {
+  const ProfilePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Profile'),
+          backgroundColor: const Color.fromRGBO(182, 196, 182, 1),
         ),
         body: Align(
           alignment: Alignment.topLeft,
           child: Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: ExactAssetImage(
-                  "frontend/univ_adventure/assets/images/backgroundProfile.svg",
-                ),
+                image: AssetImage('assets/images/backgroundProfile.png'),
+                fit: BoxFit.cover,
               ),
             ),
             child: Padding(

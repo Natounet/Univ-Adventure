@@ -105,104 +105,14 @@ class QuestDetailPage extends StatelessWidget {
     );
   }
 
-  void _handleQuestValidation(BuildContext context) async {
-    try {
-      if (quest.method == "qrcode") {
-         requestCameraPermission();
-        String? result = await scanner.scan();
-        if (result != null && result == quest.qrCode) {
-          // Gestion du succès du scan QR
-          UserManager.addPoints(quest.rewards.points);
-          for (String badge in quest.rewards.badges) {
-            UserManager.addBadge(badge);
-          }
-          showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: Text("Bien joué !"),
-              content: Text("Le QR code est correct!"),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: Text("OK"),
-                ),
-              ],
-            ),
-          );
-        } else {
-          // Gestion de l'échec du scan QR
-          showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: Text("C'est raté !"),
-              content: Text("Le QR code est incorrect."),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: Text("OK"),
-                ),
-              ],
-            ),
-          );
-        }
-      } else if (quest.method == "location") {
-         requestLocationPermission();
-        Position position = await Geolocator.getCurrentPosition(
-            desiredAccuracy: LocationAccuracy.best);
-        double distance = Geolocator.distanceBetween(
-            position.latitude,
-            position.longitude,
-            quest.location.latitude,
-            quest.location.longitude);
-        print(distance);
-
-        print("User location: ${position.latitude}, ${position.longitude}");
-        print("Quest location : ${quest.location.latitude}, ${quest.location.longitude}");
-        if (distance < 100) {
-          // supposer que 100 mètres est la proximité acceptée
-          // Gestion du succès de la localisation
-
-          UserManager.addPoints(quest.rewards.points);
-          for (String badge in quest.rewards.badges) {
-            UserManager.addBadge(badge);
-          }
-
-          showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: Text("Succès"),
-              content: Text("Vous êtes à proximité du lieu!"),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: Text("OK"),
-                ),
-              ],
-            ),
-          );
-        } else {
-          // Gestion de l'échec de la localisation
-          showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: Text("Échec"),
-              content: Text("Vous n'êtes pas assez proche du lieu."),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: Text("OK"),
-                ),
-              ],
-            ),
-          );
-        }
-      }
-    } catch (e) {
+ void _handleQuestValidation(BuildContext context) async {
+  try {
+    if (user.questsCompleted.contains(quest.questId)) {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text("Permission Required"),
-            content: Text("${(e as Exception)}. Please grant the necessary permissions in your app settings."),
+          title: Text("Quête déjà terminée"),
+          content: Text("Vous avez déjà terminé cette quête."),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
@@ -211,6 +121,116 @@ class QuestDetailPage extends StatelessWidget {
           ],
         ),
       );
+      return;
     }
+
+    if (quest.method == "qrcode") {
+      requestCameraPermission();
+      String? result = await scanner.scan();
+      if (result != null && result == quest.qrCode) {
+        // Gestion du succès du scan QR
+        UserManager.addPoints(quest.rewards.points);
+        for (String badge in quest.rewards.badges) {
+          UserManager.addBadge(badge);
+        }
+        UserManager.validateQuest(quest.questId);
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text("Bien joué !"),
+            content: Text("Le QR code est correct!"),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text("OK"),
+              ),
+            ],
+          ),
+        );
+      } else {
+        // Gestion de l'échec du scan QR
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text("C'est raté !"),
+            content: Text("Le QR code est incorrect."),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text("OK"),
+              ),
+            ],
+          ),
+        );
+      }
+    } else if (quest.method == "location") {
+      requestLocationPermission();
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.best);
+      double distance = Geolocator.distanceBetween(
+          position.latitude,
+          position.longitude,
+          quest.location.latitude,
+          quest.location.longitude);
+      print(distance);
+
+  
+      if (distance < 100) {
+        // supposer que 100 mètres est la proximité acceptée
+        // Gestion du succès de la localisation
+
+        // Vériier si l'utilisateur a déjà terminé la quête
+        
+        UserManager.addPoints(quest.rewards.points);
+        for (String badge in quest.rewards.badges) {
+          UserManager.addBadge(badge);
+        }
+        
+
+        UserManager.validateQuest(quest.questId);
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text("Succès"),
+            content: Text("Vous êtes à proximité du lieu!"),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text("OK"),
+              ),
+            ],
+          ),
+        );
+      } else {
+        // Gestion de l'échec de la localisation
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text("Échec"),
+            content: Text("Vous n'êtes pas assez proche du lieu."),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text("OK"),
+              ),
+            ],
+          ),
+        );
+      }
+    }
+  } catch (e) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Permission Required"),
+          content: Text("${(e as Exception)}. Please grant the necessary permissions in your app settings."),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text("OK"),
+          ),
+        ],
+      ),
+    );
   }
-}
+}}

@@ -67,4 +67,23 @@ class UserManager {
     User? user = getUser();
     return user?.badges ?? [];
   }
+
+
+
+  static Future<void> validateQuest(String questId) async {
+  User? user = getUser();
+  if (user != null) {
+    if (user.questsCompleted.contains(questId)) {
+      print('Vous avez déjà terminé cette quête.');
+    } else {
+      // Validez la quête et ajoutez-la à la liste des quêtes terminées
+      // Ajoute les points de la quête aux points de l'utilisateur
+
+      user.questsCompleted.add(questId);
+      await _prefs?.setString('user', jsonEncode(user.toJson()));
+      _userController.add(user);
+      print('Quête terminée avec succès !');
+    }
+  }
+}
 }

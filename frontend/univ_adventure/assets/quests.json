@@ -4,12 +4,13 @@
         "title": "La quête du lac au connard",
         "description": "Trouve notre fameux lac aux connards",
         "location": {
-            "latitude": 48.115379,
-            "longitude": 1.637839
+            "name": "Lac de l'ISTIC",
+            "latitude": 48.115367, 
+            "longitude": -1.637839
         },
         "isActive": true,
         "qrCode": "some_qr_code",
-        "method": "qrcode",
+        "method": "location",
         "startTime": null,
         "endTime": null,
         "rewards": {
@@ -22,6 +23,7 @@
         "title": "Il faut sauver le soldat Remy",
         "description": "Récupère Alix",
         "location": {
+            "name": "N'importe où",
             "latitude": 48.115379,
             "longitude": 1.637839
         },

@@ -1,8 +1,15 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"     package="com.palmbreaker.univadventure)">
+    
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    
     <application
         android:label="univ_adventure"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+
+        
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

@@ -1,26 +1,37 @@
 import 'package:flutter/material.dart';
 import '../../models/quests.dart'; // Importez votre fichier de modèle Quest ici
+import '../../components/quest_card.dart';
+import 'quest_detail_page.dart';
 
 class QuestPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Quest>>(
-      future: loadQuests(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}');
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Quêtes disponibles"),
+      ),
+      body: FutureBuilder<List<Quest>>(
+        future: loadQuests(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasError) {
+              return Center(child: Text("Erreur lors du chargement des quêtes : ${snapshot.error}"));
+            }
+            return ListView(
+              children: snapshot.data!.map((quest) => QuestCard(
+                quest: quest,
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => QuestDetailPage(quest: quest),
+                  ),
+                ),
+              )).toList(),
+            );
+          } else {
+            return Center(child: CircularProgressIndicator());
           }
-          return ListView(
-            children: snapshot.data!.map((quest) => ListTile(
-              title: Text(quest.title),
-              subtitle: Text(quest.description),
-            )).toList(),
-          );
-        } else {
-          return CircularProgressIndicator();
-        }
-      },
+        },
+      ),
     );
   }
 }

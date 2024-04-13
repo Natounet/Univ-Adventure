@@ -4,9 +4,9 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     
     <application
-        android:label="univ_adventure"
+        android:label="Univ'Adventure"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/icone">
 
         
 

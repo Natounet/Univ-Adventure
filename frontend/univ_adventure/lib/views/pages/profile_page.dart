@@ -30,9 +30,13 @@ class ProfilePage extends StatelessWidget {
                         Container(
                           width: 100.0,
                           height: 100.0,
-                          decoration: const BoxDecoration(
+                          decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            image: DecorationImage(
+                            border: Border.all(
+                              color: Colors.black, // Couleur du contour
+                              width: 2, // Épaisseur du contour
+                            ),
+                            image: const DecorationImage(
                               image: NetworkImage(
                                   'https://img.freepik.com/psd-gratuit/personne-celebrant-son-orientation-sexuelle_23-2150115662.jpg'),
                               fit: BoxFit.cover,

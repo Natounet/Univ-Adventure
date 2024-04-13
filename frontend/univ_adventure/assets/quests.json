@@ -36,5 +36,83 @@
             "badges": ["Canard"],
             "points": 100
         }
+    },
+    {
+        "questId": "fete-arrivage",
+        "title": "Fête d'arrivage",
+        "description": "Les assoliens et assoliennes donnent une grande fête pour célébrer la deux mille vingt quatrième année d’existence de M’ISTIC! Rends-y toi pour découvrir leur coutume.",
+        "method": "qrcode",
+        "isActive": true,
+        "qrCode": "fete2K24",
+        "location": {
+            "name": "Soirée de rentrée de la palme",
+            "latitude": 48.115379,
+            "longitude": -1.637839
+        },
+        "startTime": null,
+        "endTime": null,
+        "rewards": {
+            "badges": ["Assolien"],
+            "points": 100
+        }
+
+    },
+    {
+        "questId": "choisir-maison",
+        "title": "Choisir ta maison",
+        "description": "Adhère à une des associations de l'ISTIC pour aider ton intégration parmi les assoliens.",
+        "method": "qrcode",
+        "location": {
+            "name": "Associations de l'ISTIC",
+            "latitude": 48.115379,
+            "longitude": -1.637839
+        },
+        "isActive": true,
+        "qrCode": "maison",
+        "startTime": null,
+        "endTime": null,
+        "rewards": {
+            "badges": ["M'ISTIC"],
+            "points": 100
+        }
+    },
+    {
+        "questId": "le-foyer",
+        "title": "Le Foyer",
+        "description": "Les assoliens et assoliennes ont un quartier général, c'est là où ils se retrouvent entre les cours de magie. Ils et elles y mangent le midi, y discutent, s'y entraide et s'y organise. Viens découvrir ce lieu merveilleux : le foyer.",
+        "method": "qrcode",
+        "location": {
+            "name": "Foyer de l'ISTIC, dans le bâtiment 12D au dessus de la cafet",
+            "latitude": 48.115379,
+            "longitude": -1.637839
+        },
+        "isActive": true,
+        "qrCode": "foyer",
+        "startTime": null,
+        "endTime": null,
+        "rewards": {
+            "badges": ["Foyer"],
+            "points": 100
+        }
+    },
+    {
+        "questId": "amphi-p",
+        "title": "L'Amphi P",
+        "description": "Environ un quart de tes cours seront des cours magistraux (CM). Certains d'entre eux auront lieu dans l'amphi P, une salle étrange à l'odeur parfois répugnante, sûrement à cause des potions qui y sont fabriquées devant les apprentis sorciers et les apprentis sorcières.",
+        "method": "qrcode",
+        "location": {
+            "name": "Amphi P à l'ISTIC (bâtiment 12D)",
+            "latitude": 48.115379,
+            "longitude": -1.637839
+        },
+        "isActive": true,
+        "qrCode": "amphiP",
+        "startTime": null,
+        "endTime": null,
+        "rewards": {
+            "badges": ["Amphi P"],
+            "points": 100
+        }
     }
+    
 ]

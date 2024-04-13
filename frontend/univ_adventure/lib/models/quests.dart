@@ -10,8 +10,8 @@ class Quest {
   final bool isActive;
   final String qrCode;
   final String method;
-  final dynamic startTime;
-  final dynamic endTime;
+  final dynamic? startTime;
+  final dynamic? endTime;
   final Rewards rewards;
 
   Quest({
@@ -41,9 +41,7 @@ class Quest {
       rewards: Rewards.fromJson(Map<String, dynamic>.from(json['rewards'])),
     );
   }
-  
 }
-
 Future<List<Quest>> loadQuests() async {
   String jsonString = await rootBundle.loadString('assets/quests.json');
   List<dynamic> jsonResponse = jsonDecode(jsonString);

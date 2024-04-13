@@ -16,18 +16,27 @@ class QuestPage extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasError) {
-              return Center(child: Text("Erreur lors du chargement des quêtes : ${snapshot.error}"));
+              return Center(
+                  child: Text(
+                      "Erreur lors du chargement des quêtes : ${snapshot.error}"));
             }
             return ListView(
-              children: snapshot.data!.map((quest) => QuestCard(
-                quest: quest,
-                onTap: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => QuestDetailPage(quest: quest, user: UserManager.getUser()!),
-                  ),
-                ),
-                isCompleted: UserManager.getUser()!.questsCompleted.contains(quest.questId),
-              )).toList(),
+              children: snapshot.data!
+                  .map((quest) => QuestCard(
+                        quest: quest,
+                        onTap: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => QuestDetailPage(
+                                quest: quest, user: UserManager.getUser()!),
+                          ),
+                        ),
+                        isCompleted: UserManager.getUser()!
+                            .questsCompleted
+                            .contains(quest.questId),
+                      ))
+                  .toList()
+                  .cast<
+                      Widget>(), // Assurez-vous que la liste est de type List<Widget>
             );
           } else {
             return Center(child: CircularProgressIndicator());

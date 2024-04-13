@@ -19,7 +19,7 @@ class _HomePageState extends State<HomePage> {
     NewsPage(),
     QuestPage(),
     MapPage(),
-    ChatPage(),
+    //ChatPage(),
     ProfilePage(),
   ];
 
@@ -61,10 +61,14 @@ class _HomePageState extends State<HomePage> {
                     icon: Icon(Icons.map),
                     label: 'Map',
                   ),
+
+
+                  /*
                   BottomNavigationBarItem(
                     icon: Icon(Icons.sms),
                     label: 'Chat',
                   ),
+                  */
                   BottomNavigationBarItem(
                     icon: Icon(Icons.person),
                     label: 'Profile',

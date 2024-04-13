@@ -30,6 +30,9 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
+/frontend/univ_adventure/linux/
+/frontend/univ_adventure/macos
+/frontend/univ_adventure/windows
 
 # Symbolication related
 app.*.symbols

@@ -10,14 +10,12 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_map_marker_popup/flutter_map_marker_popup.dart';
 import 'package:univ_adventure/views/pages/CustomMarker.dart';
 
-
 class MapPage extends StatefulWidget {
   @override
   _MapPageState createState() => _MapPageState();
 }
 
 class _MapPageState extends State<MapPage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,27 +28,27 @@ class _MapPageState extends State<MapPage> {
           if (snapshot.hasData) {
             return FlutterMap(
               options: MapOptions(
-                initialCenter: const LatLng(48.11739072417471, -1.6383751048627655),
-                initialZoom: 16.0,
-                onTap: (tapPosition, point) => print(snapshot.data!)),
+                  initialCenter:
+                      const LatLng(48.11739072417471, -1.6383751048627655),
+                  initialZoom: 16.0,
+                  onTap: (tapPosition, point) => print(snapshot.data!)),
               children: [
                 TileLayer(
-                  urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                  urlTemplate:
+                      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
                   subdomains: const ['a', 'b', 'c'], // serveurs de tuiles OSM
                 ),
                 PopupMarkerLayer(
-          options: PopupMarkerLayerOptions(
-            markers: snapshot.data! as List<Marker>,
-            popupDisplayOptions: PopupDisplayOptions(
-              builder: (BuildContext context, Marker marker) =>
-                  AlertDialog(
-                    title:Text((marker as CustomMarker).title),
-                    content:Text(marker.description)
-                  )
-            ),
-          ),
-        ),
-      ],
+                  options: PopupMarkerLayerOptions(
+                    markers: snapshot.data! as List<Marker>,
+                    popupDisplayOptions: PopupDisplayOptions(
+                        builder: (BuildContext context, Marker marker) =>
+                            AlertDialog(
+                                title: Text((marker as CustomMarker).title),
+                                content: Text(marker.description))),
+                  ),
+                ),
+              ],
             );
           } else if (snapshot.hasError) {
             return Text('Erreur: ${snapshot.error}');
@@ -62,6 +60,7 @@ class _MapPageState extends State<MapPage> {
     );
   }
 }
+
 Future<List<CustomMarker>> getMarkersFromJson() async {
   // Charger le contenu du fichier JSON
   String jsonContent = await rootBundle.loadString('assets/POI.json');
@@ -72,12 +71,16 @@ Future<List<CustomMarker>> getMarkersFromJson() async {
   // Créer des marqueurs à partir des données JSON
   List<CustomMarker> markers = jsonList.map((poi) {
     return CustomMarker(
-      title:poi['name'],
+      title: poi['name'],
       description: poi['description'],
       width: 80.0,
       height: 80.0,
       point: LatLng(poi['latitude'], poi['longitude']),
-      child: AlertDialog(title:Text(poi['name']),content:Text(poi['description'])),
+      child: AlertDialog(
+          title: Text(poi['name']),
+          content: Text(poi['description']),
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 64.0, horizontal: 128.0)),
     );
   }).toList();
 

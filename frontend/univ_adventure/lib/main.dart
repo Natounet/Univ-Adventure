@@ -6,6 +6,7 @@ import 'services/user_manager.dart'; // Assurez-vous d'importer la classe UserMa
 import 'models/user.dart'; // Assurez-vous d'importer la classe User correctement  
 import 'package:shared_preferences/shared_preferences.dart';
 import 'views/pages/signup_page.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class UserPreferences {
   static late SharedPreferences _preferences;
@@ -44,6 +45,9 @@ void main() async {
   if (initialUser != null) {
     UserManager.addUser(initialUser);
   }
+
+  // Initialize Firebase
+  await Firebase.initializeApp();
 
   runApp(MyApp(isFirstTime: isFirstTime));
 }

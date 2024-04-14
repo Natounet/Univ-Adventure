@@ -1,10 +1,21 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import '../../models/quests.dart'; // Importez votre fichier de modèle Quest ici
+import 'package:firebase_storage/firebase_storage.dart';
+import '../../models/quests.dart';
 import '../../components/quest_card.dart';
 import 'quest_detail_page.dart';
-import '../../services/user_manager.dart'; // Assurez-vous d'importer la classe UserManager correctement
+import '../../services/user_manager.dart';
 
 class QuestPage extends StatelessWidget {
+  
+Future<List<Quest>> loadQuests() async {
+  final ref = FirebaseStorage.instance.ref().child('quests.json');
+  final data = await ref.getData();
+  final jsonStr = utf8.decode(data!);
+  final List<dynamic> json = jsonDecode(jsonStr);
+  return json.map((e) => Quest.fromJson(e)).toList();
+}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,8 +46,7 @@ class QuestPage extends StatelessWidget {
                             .contains(quest.questId),
                       ))
                   .toList()
-                  .cast<
-                      Widget>(), // Assurez-vous que la liste est de type List<Widget>
+                  .cast<Widget>(),
             );
           } else {
             return Center(child: CircularProgressIndicator());

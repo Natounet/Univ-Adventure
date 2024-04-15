@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:univ_adventure/models/quests.dart';
 import '../models/user.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -70,20 +71,29 @@ class UserManager {
 
 
 
-  static Future<void> validateQuest(String questId) async {
+  static Future<bool> validateQuest(Quest quest) async {
   User? user = getUser();
   if (user != null) {
-    if (user.questsCompleted.contains(questId)) {
+    if (user.questsCompleted.contains(quest.questId)) {
       print('Vous avez déjà terminé cette quête.');
+      return false;
     } else {
       // Validez la quête et ajoutez-la à la liste des quêtes terminées
       // Ajoute les points de la quête aux points de l'utilisateur
 
-      user.questsCompleted.add(questId);
+      user.questsCompleted.add(quest.questId);
+      user.points += quest.rewards.points;
+      for (String badge in quest.rewards.badges) {
+        user.badges.add(badge);
+      }
+
       await _prefs?.setString('user', jsonEncode(user.toJson()));
       _userController.add(user);
       print('Quête terminée avec succès !');
+      return true;
     }
   }
+
+  return false;
 }
 }

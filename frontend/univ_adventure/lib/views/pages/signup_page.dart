@@ -1,77 +1,105 @@
 import 'package:flutter/material.dart';
-import 'package:univ_adventure/models/user.dart';
+import 'package:firebase_auth/firebase_auth.dart' as Auth;
 import 'package:univ_adventure/views/pages/home_page.dart';
-import '../../services/user_manager.dart'; // Supposons que c'est votre gestionnaire d'utilisateur
+import 'package:univ_adventure/services/user_manager.dart';
+import 'package:univ_adventure/models/user.dart';
+
 
 class SignupPage extends StatefulWidget {
+  SignupPage({Key? key}) : super(key: key);
+
   @override
   _SignupPageState createState() => _SignupPageState();
 }
 
 class _SignupPageState extends State<SignupPage> {
   final _formKey = GlobalKey<FormState>();
-  String _name = '';
   String _email = '';
+  String _password = '';
+  String _name = '';
 
   void _trySubmitForm() async {
   final isValid = _formKey.currentState?.validate();
-  print('Formulaire invalide: $isValid');
 
   if (isValid == true) {
     _formKey.currentState?.save();
-    print('Nom: $_name, Email: $_email');
 
-    User newUser = User(
-        createdAt: DateTime.now(),
+    try {
+      Auth.UserCredential userCredential = await Auth.FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: _email,
-        name: _name,
-        userId: 1,
-        profilePicture: '');
-    UserManager.addUser(newUser);
-    Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => HomePage()));
-  } else {
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text('Formulaire invalide'),
-        content: Text('Veuillez entrer un nom et une adresse mail universitaire valide. (prenom.nom@etudiant.univ-rennes.fr)'),
-        actions: <Widget>[
-          TextButton(
-            child: Text('Okay'),
-            onPressed: () {
-              Navigator.of(ctx).pop();
-            },
+        password: _password,
+      );
+
+      if (mounted) {
+
+        // Créer un nouvel utilisateur avec le UserManager
+        UserManager.addUser(User(
+          userId: userCredential.user!.uid,
+          name: _name,
+          email: _email,
+          profilePicture: '',
+          createdAt: DateTime.now(),
+          questsCompleted: [],
+          badges: [],
+        ));
+
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => HomePage()),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: const Text('Erreur'),
+            content: Text('Une erreur s\'est produite lors de la création de l\'utilisateur. Veuillez réessayer. ${e.toString()}'),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('Okay'),
+                onPressed: () {
+                  Navigator.of(ctx).pop();
+                },
+              ),
+            ],
           ),
-        ],
-      ),
-    );
+        );
+      }
+    }
+  } else {
+    if (mounted) {
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text('Formulaire invalide'),
+          content: const Text('Veuillez entrer un nom et une adresse mail universitaire valide. (prenom.nom@etudiant.univ-rennes.fr)'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Okay'),
+              onPressed: () {
+                Navigator.of(ctx).pop();
+              },
+            ),
+          ],
+        ),
+      );
+    }
   }
 }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Sign Up')),
+      appBar:  AppBar(title: Text('Sign Up')),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               TextFormField(
-                decoration: InputDecoration(labelText: 'Nom'),
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return 'Veuillez entrer votre nom';
-                  }
-                  return null;
-                },
-                onSaved: (value) => _name = value!,
-              ),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Email'),
+                decoration: const InputDecoration(labelText: 'Email'),
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
                     return 'Veuillez entrer votre adresse mail étudiante';
@@ -83,10 +111,21 @@ class _SignupPageState extends State<SignupPage> {
                 },
                 onSaved: (value) => _email = value!,
               ),
-              SizedBox(height: 20),
+              TextFormField(
+                decoration: const InputDecoration(labelText: 'Mot de passe'),
+                obscureText: true,
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return 'Veuillez entrer votre mot de passe';
+                  }
+                  return null;
+                },
+                onSaved: (value) => _password = value!,
+              ),
+              const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _trySubmitForm,
-                child: Text('Envoyer'),
+                child: const Text('Envoyer'),
               ),
             ],
           ),

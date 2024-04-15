@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import '../../models/quests.dart';
 import '../../components/quest_card.dart';
-import 'quest_detail_page.dart';
+import 'quests/qr_quest_page.dart';
+import 'quests/location_quest_page.dart';
 import '../../services/user_manager.dart';
 
 class QuestPage extends StatelessWidget {
@@ -35,12 +36,23 @@ Future<List<Quest>> loadQuests() async {
               children: snapshot.data!
                   .map((quest) => QuestCard(
                         quest: quest,
-                        onTap: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => QuestDetailPage(
-                                quest: quest, user: UserManager.getUser()!),
-                          ),
-                        ),
+                        onTap: () {
+                          if (quest.method == "qrcode") {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => QRQuestPage(
+                                    quest: quest, user: UserManager.getUser()!),
+                              ),
+                            );
+                          } else if (quest.method == "location") {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => LocationQuestPage(
+                                    quest: quest, user: UserManager.getUser()!),
+                              ),
+                            );
+                          }
+                        },
                         isCompleted: UserManager.getUser()!
                             .questsCompleted
                             .contains(quest.questId),

@@ -20,26 +20,26 @@ class _UserAuthState extends State<UserAuth> {
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
         await _attemptLogin();
-      }  else {
-            showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
+      } else {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
               title: Text('Erreur de connexion'),
               content: Text('L\'email et le mot de passe ne correspondent pas.'),
               actions: [
                 TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text('OK'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('OK'),
                 ),
               ],
               backgroundColor: Colors.red[200], // Add a reddish color
-              );
-            },
             );
-        }
+          },
+        );
+      }
     } catch (e) {
       showDialog(
         context: context,
@@ -95,7 +95,8 @@ class _UserAuthState extends State<UserAuth> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text('Email envoyé'),
-            content: Text('Si un compte existe avec et email, un email de réinitialisation du mot de passe a été envoyé à ${_emailController.text}.'),
+            content: Text(
+                'Si un compte existe avec et email, un email de réinitialisation du mot de passe a été envoyé à ${_emailController.text}.'),
             actions: [
               TextButton(
                 onPressed: () {
@@ -109,13 +110,13 @@ class _UserAuthState extends State<UserAuth> {
       );
     } catch (e) {
       showDialog(
-
         // On répète la même chose en cas d'erreur pour ne pas leak d'informations
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text('Email envoyé'),
-            content: Text('Si un compte existe avec et email, un email de réinitialisation du mot de passe a été envoyé à ${_emailController.text}.'),
+            content: Text(
+                'Si un compte existe avec et email, un email de réinitialisation du mot de passe a été envoyé à ${_emailController.text}.'),
             actions: [
               TextButton(
                 onPressed: () {
@@ -134,24 +135,25 @@ class _UserAuthState extends State<UserAuth> {
     String userId = userCredential.user!.uid;
 
     QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance
-      .collection('users')
-      .where('userID', isEqualTo: userId)
-      .get();
+        .collection('users')
+        .where('userID', isEqualTo: userId)
+        .get();
 
     if (snapshot.docs.isNotEmpty) {
       UserManager.addUserID(userId);
       Navigator.pushReplacementNamed(context, '/home');
     } else {
-      Navigator.pushNamed(context, '/signup', arguments: {'userID': userId, 'userEmail': userCredential.user!.email});    }
+      Navigator.pushNamed(context, '/signup',
+          arguments: {'userID': userId, 'userEmail': userCredential.user!.email});
+    }
   }
-  
-  
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Page de connexion'),
+        centerTitle: true,
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
@@ -171,9 +173,18 @@ class _UserAuthState extends State<UserAuth> {
               obscureText: true,
             ),
             SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: _signup,
-              child: Text('Se connecter'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: _attemptLogin,
+                  child: Text('Se connecter'),
+                ),
+                ElevatedButton(
+                  onPressed: _signup,
+                  child: Text('S\'inscrire'),
+                ),
+              ],
             ),
             TextButton(
               onPressed: _forgotPassword,

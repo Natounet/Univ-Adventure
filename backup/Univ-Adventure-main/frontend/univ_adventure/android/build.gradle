@@ -1,0 +1,39 @@
+buildscript {
+    repositories {
+        google()
+        jcenter()
+    }
+    
+    dependencies {
+        classpath 'com.google.gms:google-services:4.4.1'
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    afterEvaluate { Project project ->
+        if (project.plugins.hasPlugin('com.android.library')) {
+            // Check if the project doesn't have a namespace defined
+            if (project.android.namespace == null) {
+                // Apply a namespace based on the project name
+                project.android.namespace = "com.example." + project.name.replace('-', '_')
+            }
+        }
+    }
+}
+
+rootProject.buildDir = '../build'
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
+subprojects {
+    project.evaluationDependsOn(':app')
+}
+
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}

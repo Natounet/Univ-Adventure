@@ -1,0 +1,56 @@
+[
+  {
+    "name": "ISTIC",
+    "description": "La fac d'Informatique-Electronique de l'université de Rennes.",
+    "latitude": 48.115727590042624,
+    "longitude": -1.6386050047936813
+  },
+  {
+    "name": "RU Astrolab",
+    "description": "Le restaurant universitaire du camus de beaulieu, ouvert le midi dès 11h15 et jusqu'à 13h45, avec une cafétéria juste à côté !",
+    "latitude": 48.11855887405242,
+    "longitude": -1.6358394006253518
+  },
+  {
+    "name": "RU INSA",
+    "description": "Le restaurant universitaire de l'INSA, ouvert le midi ET le soir ! Génial pour les étudiants qui habitent à proximité du campus ou qui sortent de cours en début de soirée.",
+    "latitude": 48.12189137812646,
+    "longitude": -1.6374415345306144
+  },
+  {
+    "name": "Le Diapason",
+    "description": "Le centre culturel du campus de Beaulieu. On peut y faire du sport, aller voir une pièce de théatre ou un concert, manger... Toute la programmation et les évènements sont disponibles directement sur le site du Diapason.",
+    "latitude": 48.11800342948592,
+    "longitude": -1.6439484137000322
+  },
+  {
+    "name": "Bibliotèque universitaire",
+    "description": "La bibliothèque universitaire de Beaulieu, où les étudiants peuvent aller étudier et emprunter des livres pour leurs études parmis un vaste éventail de choix !",
+    "latitude": 48.11893158615469,
+    "longitude": -1.6365938413966985
+  },
+  {
+    "name": "INSA",
+    "description": "Une des écoles d'ingénieurs du campus de Beaulieu.",
+    "latitude": 48.12088140719304,
+    "longitude": -1.6356749957743142
+  },
+  {
+    "name": "Métro Beaulieu",
+    "description": "Il y avait un métro ici à l'époque... Peut-être reviendra-t-il avant la fin de nos études ?",
+    "latitude": 48.12211541385607,
+    "longitude": -1.6391033098404906
+  },
+  {
+    "name": "La Rustine",
+    "description": "La Rustine est une association de réparation de vélos sur Rennes. On peut les retrouver sur le campus les lundis de 18h à 20h et les mardis de 12h à 14h et de 18h à 20h.",
+    "latitude": 48.1160067123585,
+    "longitude": -1.6406821439751573
+  },
+  {
+    "name": "Chez Rémi",
+    "description": "Ça c'est chez rémi, c'est un peu le QG des BGs depuis qu'il a changé (Conseil pour les nouveaux étudiants : si il y a de la moisissure sur vos murs, PARTEZ !)",
+    "latitude": 48.10672949950307,
+    "longitude": -1.6676001327762118
+  }
+]

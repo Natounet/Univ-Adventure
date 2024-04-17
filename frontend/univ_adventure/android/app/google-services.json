@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "599062571292",
-    "project_id": "univ-r-6b5ca",
-    "storage_bucket": "univ-r-6b5ca.appspot.com"
+    "project_number": "855471216767",
+    "project_id": "univadventure",
+    "storage_bucket": "univadventure.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:599062571292:android:24026d7a1d62988562b2d9",
+        "mobilesdk_app_id": "1:855471216767:android:7b2fe5a41908f21613074a",
         "android_client_info": {
           "package_name": "com.example.univ_adventure"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDljbHacdJy-zE-Z1V00kkgLZsG2HAaZf8"
+          "current_key": "AIzaSyC-RMNovBKCpts-HIwLut-9F2ZOKro9_PE"
         }
       ],
       "services": {

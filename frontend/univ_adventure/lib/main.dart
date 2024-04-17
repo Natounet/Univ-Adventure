@@ -1,68 +1,62 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:univ_adventure/views/pages/home_page.dart';
+
+import 'package:univ_adventure/views/pages/homepage.dart';
+import 'package:univ_adventure/views/pages/signUp.dart';
+import 'package:univ_adventure/views/pages/userAuth.dart';
+import 'views/pages/userAuth.dart';
+
+
 import 'services/user_manager.dart'; // Assurez-vous d'importer la classe UserManager correctement
-import 'models/user.dart'; // Assurez-vous d'importer la classe User correctement  
-import 'package:shared_preferences/shared_preferences.dart';
-import 'views/pages/signup_page.dart';
+
 import 'package:firebase_core/firebase_core.dart';
 
-class UserPreferences {
-  static late SharedPreferences _preferences;
+import 'firebase_options.dart';
 
-  static Future init() async {
-    _preferences = await SharedPreferences.getInstance();
-  }
 
-  static Future setUser(User user) async {
-    final userData = user.toJson();
-    await _preferences.setString('user', jsonEncode(userData));
-  }
-
-  static User? getUser() {
-    final userData = _preferences.getString('user');
-    return userData == null ? null : User.fromJson(jsonDecode(userData));
-  }
-
-  static bool isFirstTime() {
-    bool firstTime = _preferences.getBool('first_time') ?? true;
-    if (firstTime) {
-      _preferences.setBool('first_time', false);
-    }
-    return firstTime;
-  }
-}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await UserPreferences.init();
-  bool isFirstTime = UserPreferences.isFirstTime();
+  await UserManager.initialize();
+ 
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
-  // Initialize UserManager and set the initial user
-  UserManager.initialize();
-  User? initialUser = UserPreferences.getUser();
-  if (initialUser != null) {
-    UserManager.addUser(initialUser);
-  }
-
-  // Initialize Firebase
-  await Firebase.initializeApp();
-
-  runApp(MyApp(isFirstTime: isFirstTime));
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final bool isFirstTime;
-
-  MyApp({required this.isFirstTime});
+  MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: isFirstTime 
-        ? SignupPage() 
-        : HomePage(),
+      onGenerateRoute: (settings) {
+        if (settings.name == '/') {
+          return MaterialPageRoute(
+            builder: (context) => UserManager.getUserID() == null ? UserAuth() : HomePage(),
+          );
+        } else if (settings.name == '/home') {
+          return MaterialPageRoute(
+            builder: (context) => HomePage(),
+          );
+        } else if (settings.name == '/auth') {
+          return MaterialPageRoute(
+            builder: (context) => UserAuth(),
+          );
+        } else if (settings.name == '/signup') {
+          final args = settings.arguments as Map<String, dynamic>;
+          return MaterialPageRoute(
+            builder: (context) => SignupPage(userID: args['userID'], userEmail: args['userEmail']),
+          );
+        }
+        // Handle other routes
+      },
+      title: 'Univ Adventure',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
     );
   }
 }

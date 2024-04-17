@@ -3,8 +3,9 @@ import 'dart:async';
 import 'package:optional/optional.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:univ_adventure/models/quests.dart';
+import 'package:univ_adventure/models/quest.dart';
 import 'package:univ_adventure/models/user.dart';
+import 'package:univ_adventure/models/badge.dart';
 
 class UserManager {
   static SharedPreferences? _prefs;
@@ -119,8 +120,8 @@ class UserManager {
           questsCompleted.add(quest.questId);
           await usersCollection.doc(userID).update({'questsCompleted': questsCompleted});
           addPoints(quest.rewards.points);
-          for (String badge in quest.rewards.badges) {
-            addBadge(badge);
+          for (Badge badge in quest.rewards.badges) {
+            addBadge(badge.name);
           }
         }
       }

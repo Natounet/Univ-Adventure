@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:univ_adventure/views/pages/homepage.dart';
 import 'package:univ_adventure/views/pages/signUp.dart';
 import 'package:univ_adventure/views/pages/userAuth.dart';
+import 'package:univ_adventure/views/pages/profile.dart';
 import 'views/pages/userAuth.dart';
 
 
@@ -49,6 +50,11 @@ class MyApp extends StatelessWidget {
           final args = settings.arguments as Map<String, dynamic>;
           return MaterialPageRoute(
             builder: (context) => SignupPage(userID: args['userID'], userEmail: args['userEmail']),
+          );
+        }
+        else if (settings.name == '/profile') {
+          return MaterialPageRoute(
+            builder: (context) => ProfilePage(),
           );
         }
         // Handle other routes

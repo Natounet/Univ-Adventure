@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:univ_adventure/services/user_manager.dart';
+
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -19,6 +20,13 @@ class HomePage extends StatelessWidget {
                 Navigator.pushReplacementNamed(context, '/auth');
               },
               child: Text('Déconnexion'),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/profile');
+              },
+              child: Text('Profile'),
             ),
           ],
         ),

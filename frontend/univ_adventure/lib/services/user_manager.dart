@@ -4,6 +4,7 @@ import 'package:optional/optional.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:univ_adventure/models/quests.dart';
+import 'package:univ_adventure/models/user.dart';
 
 class UserManager {
   static SharedPreferences? _prefs;
@@ -236,5 +237,24 @@ class UserManager {
     return const Optional.empty();
   }
 
-
+  /// Retrieves the entire user object from the Firestore database.
+  ///
+  /// Returns a [Future] that completes with an [Optional] containing the user object as a [User] instance,
+  /// or an empty [Optional] if the user is not found or the user document does not exist.
+  ///
+  /// The user object is retrieved by querying the Firestore collection 'users' using the user ID obtained from [getUserID].
+  /// If the user ID is not available or the user document does not exist, an empty [Optional] is returned.
+  static Future<Optional<User>> getUser() async {
+    String? userID = getUserID();
+    if (userID != null) {
+      CollectionReference usersCollection = FirebaseFirestore.instance.collection('users');
+      DocumentSnapshot userSnapshot = await usersCollection.doc(userID).get();
+      if (userSnapshot.exists) {
+        Map<String, dynamic> userData = userSnapshot.data() as Map<String, dynamic>;
+        User user = User.fromMap(userData);
+        return Optional.of(user);
+      }
+    }
+    return const Optional.empty();
+  }
 }

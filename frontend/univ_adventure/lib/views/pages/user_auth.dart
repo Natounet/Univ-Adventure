@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:univ_adventure/services/user_manager.dart';
 
 class UserAuth extends StatefulWidget {
-  UserAuth({Key? key}) : super(key: key);
+  const UserAuth({super.key});
 
   @override
   UserAuthState createState() => UserAuthState();
@@ -46,7 +46,7 @@ class UserAuthState extends State<UserAuth> {
   Future<void> _handleUserCredential(UserCredential userCredential) async {
     String userId = userCredential.user!.uid;
 
-    QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance
+    final QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance
         .collection('users')
         .where('userID', isEqualTo: userId)
         .get();
@@ -95,20 +95,21 @@ class UserAuthState extends State<UserAuth> {
       _showSnackBar('Erreur lors de l\'envoi de l\'email de réinitialisation');
     }
   }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Univ\'Adventure'),
+        title: const Text('Univ\'Adventure'),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Image.asset('assets/images/logo.png', height: 100),  // Assurez-vous que 'logo.png' est ajouté dans votre dossier assets
-            SizedBox(height: 20), // Add some space between the logo and the card
+            const SizedBox(height: 20), // Add some space between the logo and the card
             Card(
               elevation: 8.0,
               child: Padding(
@@ -120,7 +121,7 @@ class UserAuthState extends State<UserAuth> {
                     children: [
                       TextFormField(
                         controller: _emailController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Email',
                           prefixIcon: Icon(Icons.email),
                           border: OutlineInputBorder(),
@@ -132,10 +133,10 @@ class UserAuthState extends State<UserAuth> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       TextFormField(
                         controller: _passwordController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Mot de passe',
                           prefixIcon: Icon(Icons.lock),
                           border: OutlineInputBorder(),
@@ -148,27 +149,27 @@ class UserAuthState extends State<UserAuth> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 30),
+                      const SizedBox(height: 30),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           ElevatedButton(
                             onPressed: () => _attemptSignup(),
-                            child: Text('S\'inscrire'),
-                            style: ElevatedButton.styleFrom(minimumSize: Size(140, 50)),
+                            style: ElevatedButton.styleFrom(minimumSize: const Size(140, 50)),
+                            child: const Text('S\'inscrire'),
                           ),
                           ElevatedButton(
                             onPressed: () => _attemptLogin(),
-                            child: Text('Se connecter'),
-                            style: ElevatedButton.styleFrom(minimumSize: Size(140, 50)),
+                            style: ElevatedButton.styleFrom(minimumSize: const Size(140, 50)),
+                            child: const Text('Se connecter'),
                           ),
                         ],
                       ),
                       TextButton(
                         onPressed: () => _forgotPassword(),
-                        child: Text('Mot de passe oublié ?'),
+                        child: const Text('Mot de passe oublié ?'),
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                     ],
                   ),
                 ),

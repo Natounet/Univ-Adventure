@@ -87,6 +87,49 @@ class _UserAuthState extends State<UserAuth> {
     }
   }
 
+  Future<void> _forgotPassword() async {
+    try {
+      await _auth.sendPasswordResetEmail(email: _emailController.text);
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Email envoyé'),
+            content: Text('Si un compte existe avec et email, un email de réinitialisation du mot de passe a été envoyé à ${_emailController.text}.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    } catch (e) {
+      showDialog(
+
+        // On répète la même chose en cas d'erreur pour ne pas leak d'informations
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Email envoyé'),
+            content: Text('Si un compte existe avec et email, un email de réinitialisation du mot de passe a été envoyé à ${_emailController.text}.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
   Future<void> _handleUserCredential(UserCredential userCredential) async {
     String userId = userCredential.user!.uid;
 
@@ -131,6 +174,10 @@ class _UserAuthState extends State<UserAuth> {
             ElevatedButton(
               onPressed: _signup,
               child: Text('Se connecter'),
+            ),
+            TextButton(
+              onPressed: _forgotPassword,
+              child: Text('Mot de passe oublié'),
             ),
           ],
         ),

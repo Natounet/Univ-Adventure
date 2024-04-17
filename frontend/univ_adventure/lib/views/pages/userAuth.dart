@@ -19,14 +19,14 @@ class _UserAuthState extends State<UserAuth> {
       await _attemptSignup();
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
-        await _attemptLogin();
+        
       } else {
         showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
               title: Text('Erreur de connexion'),
-              content: Text('L\'email et le mot de passe ne correspondent pas.'),
+              content: Text('Cette adresse email est déjà utilisée.'),
               actions: [
                 TextButton(
                   onPressed: () {
@@ -81,9 +81,49 @@ class _UserAuthState extends State<UserAuth> {
 
       if (userCredential.user != null) {
         await _handleUserCredential(userCredential);
+      } else {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Erreur de connexion'),
+              content: Text('Aucun compte n\'existe pour cette adresse email.'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+              backgroundColor: Colors.red[200], // Add a reddish color
+            );
+          },
+        );
       }
     } on FirebaseAuthException catch (e) {
-      print(e.message);
+      if (e.code == 'invalid-email') {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Erreur de connexion'),
+              content: Text('L\'adresse email est invalide.'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+              backgroundColor: Colors.red[200], // Add a reddish color
+            );
+          },
+        );
+      } else {
+        print(e.message);
+      }
     }
   }
 

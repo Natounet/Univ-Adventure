@@ -7,6 +7,7 @@ import 'package:univ_adventure/models/location.dart';
 class Quest {
   final String questId;
   final String title;
+  final String subtitle; // Added subtitle field
   final String description;
   final Location location;
   final bool isActive;
@@ -15,10 +16,14 @@ class Quest {
   final dynamic? startTime;
   final dynamic? endTime;
   final Rewards rewards;
+  final String imageUrl;
+  final String iconUrl; // Added iconUrl field
+  final String category; // Added category field
 
   Quest({
     required this.questId,
     required this.title,
+    required this.subtitle, // Added subtitle parameter
     required this.description,
     required this.location,
     required this.isActive,
@@ -27,12 +32,16 @@ class Quest {
     this.startTime,
     this.endTime,
     required this.rewards,
+    required this.imageUrl,
+    required this.iconUrl, // Added iconUrl parameter
+    required this.category, // Added category parameter
   });
 
   factory Quest.fromJson(Map<String, dynamic> json) {
     return Quest(
       questId: json['questId'],
       title: json['title'],
+      subtitle: json['subtitle'], // Added subtitle field
       description: json['description'],
       location: Location.fromJson(Map<String, dynamic>.from(json['location'])),
       isActive: json['isActive'],
@@ -41,6 +50,9 @@ class Quest {
       startTime: json['startTime'],
       endTime: json['endTime'],
       rewards: Rewards.fromJson(Map<String, dynamic>.from(json['rewards'])),
+      imageUrl: json['imageUrl'],
+      iconUrl: json['iconUrl'], // Added iconUrl field
+      category: json['category'], // Added category field
     );
   }
 }

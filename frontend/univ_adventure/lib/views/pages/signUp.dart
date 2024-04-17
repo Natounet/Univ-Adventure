@@ -14,6 +14,8 @@ class SignupPage extends StatefulWidget {
 
 class _SignupPageState extends State<SignupPage> {
   final TextEditingController _usernameController = TextEditingController();
+  bool _isMaleSelected = false;
+  bool _isFemaleSelected = false;
 
   void createUser(String username) {
     UserManager.addUserID(widget.userID); // Add the user's ID to the shared preferences
@@ -23,6 +25,7 @@ class _SignupPageState extends State<SignupPage> {
       'userID': widget.userID, // Add the user's ID to the document (this is the document ID)
       'username': username,
       'email': widget.userEmail,
+      'gender': _isMaleSelected ? 'Homme' : 'Femme',
       'createdAt': FieldValue.serverTimestamp(),
       'points': 0,  
       'badges': [],
@@ -50,6 +53,32 @@ class _SignupPageState extends State<SignupPage> {
               decoration: const InputDecoration(
                 labelText: 'Comment souhaites-tu être appelé?',
               ),
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Checkbox(
+                  value: _isMaleSelected,
+                  onChanged: (value) {
+                    setState(() {
+                      _isMaleSelected = value ?? false;
+                      _isFemaleSelected = false;
+                    });
+                  },
+                ),
+                const Text('Homme'),
+                Checkbox(
+                  value: _isFemaleSelected,
+                  onChanged: (value) {
+                    setState(() {
+                      _isFemaleSelected = value ?? false;
+                      _isMaleSelected = false;
+                    });
+                  },
+                ),
+                const Text('Femme'),
+              ],
             ),
             const SizedBox(height: 20),
             ElevatedButton(

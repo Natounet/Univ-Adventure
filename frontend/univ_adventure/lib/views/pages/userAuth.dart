@@ -14,19 +14,63 @@ class _UserAuthState extends State<UserAuth> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  Future<void> _signup() async {
+
+  Future<void> _attemptSignup() async {
     try {
-      await _attemptSignup();
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+
+      if (userCredential.user != null) {
+        await _handleUserCredential(userCredential);
+      }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
-        
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Erreur d\'inscription'),
+              content: Text('Un compte existe déjà avec cette adresse email.'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+              backgroundColor: Colors.red[200], // Add a reddish color
+            );
+          },
+        );
+      } else if (e.code == 'weak-password') {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Erreur d\'inscription'),
+              content: Text('Le mot de passe est trop faible.'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+              backgroundColor: Colors.red[200], // Add a reddish color
+            );
+          },
+        );
       } else {
         showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('Erreur de connexion'),
-              content: Text('Cette adresse email est déjà utilisée.'),
+              title: Text('Erreur d\'inscription'),
+              content: Text(e.message ?? 'Une erreur inconnue est survenue.'),
               actions: [
                 TextButton(
                   onPressed: () {
@@ -40,35 +84,6 @@ class _UserAuthState extends State<UserAuth> {
           },
         );
       }
-    } catch (e) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Erreur'),
-            content: Text('Une erreur s\'est produite lors de la connexion.'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
-    }
-  }
-
-  Future<void> _attemptSignup() async {
-    UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
-      email: _emailController.text,
-      password: _passwordController.text,
-    );
-
-    if (userCredential.user != null) {
-      await _handleUserCredential(userCredential);
     }
   }
 
@@ -121,8 +136,44 @@ class _UserAuthState extends State<UserAuth> {
             );
           },
         );
+      } else if (e.code == 'wrong-password') {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Erreur de connexion'),
+              content: Text('Le mot de passe est incorrect.'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+              backgroundColor: Colors.red[200], // Add a reddish color
+            );
+          },
+        );
       } else {
-        print(e.message);
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Erreur de connexion'),
+              content: Text(e.message ?? 'Une erreur inconnue est survenue.'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+              backgroundColor: Colors.red[200], // Add a reddish color
+            );
+          },
+        );
       }
     }
   }
@@ -221,7 +272,7 @@ class _UserAuthState extends State<UserAuth> {
                   child: Text('Se connecter'),
                 ),
                 ElevatedButton(
-                  onPressed: _signup,
+                  onPressed: _attemptSignup,
                   child: Text('S\'inscrire'),
                 ),
               ],

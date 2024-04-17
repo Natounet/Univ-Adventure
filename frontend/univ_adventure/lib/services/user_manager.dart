@@ -217,5 +217,24 @@ class UserManager {
     return const Optional.empty();
   }
 
+  /// Retrieves the gender of the current user.
+  ///
+  /// Returns a [Future] that completes with an [Optional] containing the gender as a [String].
+  /// If the user is not authenticated or the user document does not exist, it returns an empty [Optional].
+  static Future<Optional<String>> getGender() async {
+    String? userID = getUserID();
+    if (userID != null) {
+      CollectionReference usersCollection = FirebaseFirestore.instance.collection('users');
+      DocumentSnapshot userSnapshot = await usersCollection.doc(userID).get();
+      if (userSnapshot.exists) {
+        String? gender = (userSnapshot.data() as Map<String, dynamic>)['gender'];
+        if (gender != null) {
+          return Optional.of(gender);
+        }
+      }
+    }
+    return const Optional.empty();
+  }
+
 
 }

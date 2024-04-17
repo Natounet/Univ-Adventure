@@ -1,224 +1,45 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:univ_adventure/services/user_manager.dart';
 
 class UserAuth extends StatefulWidget {
+  UserAuth({Key? key}) : super(key: key);
+
   @override
-  _UserAuthState createState() => _UserAuthState();
+  UserAuthState createState() => UserAuthState();
 }
 
-class _UserAuthState extends State<UserAuth> {
+class UserAuthState extends State<UserAuth> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  void _showSnackBar(String message, {Color backgroundColor = Colors.red}) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: backgroundColor,
+      ),
+    );
+  }
 
   Future<void> _attemptSignup() async {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
     try {
       UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
-        email: _emailController.text,
-        password: _passwordController.text,
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
       );
-
       if (userCredential.user != null) {
         await _handleUserCredential(userCredential);
+        _showSnackBar('Inscription réussie', backgroundColor: Colors.green);
       }
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'email-already-in-use') {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Erreur d\'inscription'),
-              content: Text('Un compte existe déjà avec cette adresse email.'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text('OK'),
-                ),
-              ],
-              backgroundColor: Colors.red[200], // Add a reddish color
-            );
-          },
-        );
-      } else if (e.code == 'weak-password') {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Erreur d\'inscription'),
-              content: Text('Le mot de passe est trop faible.'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text('OK'),
-                ),
-              ],
-              backgroundColor: Colors.red[200], // Add a reddish color
-            );
-          },
-        );
-      } else {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Erreur d\'inscription'),
-              content: Text(e.message ?? 'Une erreur inconnue est survenue.'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text('OK'),
-                ),
-              ],
-              backgroundColor: Colors.red[200], // Add a reddish color
-            );
-          },
-        );
-      }
-    }
-  }
-
-  Future<void> _attemptLogin() async {
-    try {
-      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-        email: _emailController.text,
-        password: _passwordController.text,
-      );
-
-      if (userCredential.user != null) {
-        await _handleUserCredential(userCredential);
-      } else {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Erreur de connexion'),
-              content: Text('Aucun compte n\'existe pour cette adresse email.'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text('OK'),
-                ),
-              ],
-              backgroundColor: Colors.red[200], // Add a reddish color
-            );
-          },
-        );
-      }
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'invalid-email') {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Erreur de connexion'),
-              content: Text('L\'adresse email est invalide.'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text('OK'),
-                ),
-              ],
-              backgroundColor: Colors.red[200], // Add a reddish color
-            );
-          },
-        );
-      } else if (e.code == 'wrong-password') {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Erreur de connexion'),
-              content: Text('Le mot de passe est incorrect.'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text('OK'),
-                ),
-              ],
-              backgroundColor: Colors.red[200], // Add a reddish color
-            );
-          },
-        );
-      } else {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Erreur de connexion'),
-              content: Text(e.message ?? 'Une erreur inconnue est survenue.'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text('OK'),
-                ),
-              ],
-              backgroundColor: Colors.red[200], // Add a reddish color
-            );
-          },
-        );
-      }
-    }
-  }
-
-  Future<void> _forgotPassword() async {
-    try {
-      await _auth.sendPasswordResetEmail(email: _emailController.text);
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Email envoyé'),
-            content: Text(
-                'Si un compte existe avec et email, un email de réinitialisation du mot de passe a été envoyé à ${_emailController.text}.'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
-    } catch (e) {
-      showDialog(
-        // On répète la même chose en cas d'erreur pour ne pas leak d'informations
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Email envoyé'),
-            content: Text(
-                'Si un compte existe avec et email, un email de réinitialisation du mot de passe a été envoyé à ${_emailController.text}.'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
+      _showSnackBar('Erreur d\'inscription: ${e.message}');
     }
   }
 
@@ -232,54 +53,126 @@ class _UserAuthState extends State<UserAuth> {
 
     if (snapshot.docs.isNotEmpty) {
       UserManager.addUserID(userId);
-      Navigator.pushReplacementNamed(context, '/home');
+      if (mounted) {
+        Navigator.pushReplacementNamed(context, '/home');
+      }
     } else {
-      Navigator.pushNamed(context, '/signup',
-          arguments: {'userID': userId, 'userEmail': userCredential.user!.email});
+      if (mounted) {
+        Navigator.pushNamed(context, '/signup',
+            arguments: {'userID': userId, 'userEmail': userCredential.user!.email});
+      }
     }
   }
 
+  Future<void> _attemptLogin() async {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+    try {
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+      if (userCredential.user != null) {
+        await _handleUserCredential(userCredential);
+      } else {
+        _showSnackBar('Aucun compte trouvé pour cette adresse email');
+      }
+    } on FirebaseAuthException catch (e) {
+      _showSnackBar('Erreur de connexion: ${e.message}');
+    }
+  }
+
+  Future<void> _forgotPassword() async {
+    if (_emailController.text.isEmpty) {
+      _showSnackBar('Veuillez entrer votre email pour réinitialiser le mot de passe');
+      return;
+    }
+    try {
+      await _auth.sendPasswordResetEmail(email: _emailController.text.trim());
+      _showSnackBar('Email de réinitialisation envoyé', backgroundColor: Colors.blue);
+    } catch (e) {
+      _showSnackBar('Erreur lors de l\'envoi de l\'email de réinitialisation');
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Page de connexion'),
+        title: Text('Univ\'Adventure'),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
-            TextField(
-              controller: _emailController,
-              decoration: InputDecoration(
-                labelText: 'Email',
-              ),
-            ),
-            TextField(
-              controller: _passwordController,
-              decoration: InputDecoration(
-                labelText: 'Mot de passe',
-              ),
-              obscureText: true,
-            ),
-            SizedBox(height: 16.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
-                  onPressed: _attemptLogin,
-                  child: Text('Se connecter'),
+            SizedBox(height: 20),
+            Image.asset('assets/images/logo.png', height: 100),  // Assurez-vous que 'logo.png' est ajouté dans votre dossier assets
+            SizedBox(height: 20), // Add some space between the logo and the card
+            Card(
+              elevation: 8.0,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TextFormField(
+                        controller: _emailController,
+                        decoration: InputDecoration(
+                          labelText: 'Email',
+                          prefixIcon: Icon(Icons.email),
+                          border: OutlineInputBorder(),
+                        ),
+                        validator: (value) {
+                          if (value == null || !value.contains('@')) {
+                            return 'Adresse email invalide';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 20),
+                      TextFormField(
+                        controller: _passwordController,
+                        decoration: InputDecoration(
+                          labelText: 'Mot de passe',
+                          prefixIcon: Icon(Icons.lock),
+                          border: OutlineInputBorder(),
+                        ),
+                        obscureText: true,
+                        validator: (value) {
+                          if (value == null || value.length < 6) {
+                            return 'Le mot de passe doit contenir au moins 6 caractères';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 30),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () => _attemptSignup(),
+                            child: Text('S\'inscrire'),
+                            style: ElevatedButton.styleFrom(minimumSize: Size(140, 50)),
+                          ),
+                          ElevatedButton(
+                            onPressed: () => _attemptLogin(),
+                            child: Text('Se connecter'),
+                            style: ElevatedButton.styleFrom(minimumSize: Size(140, 50)),
+                          ),
+                        ],
+                      ),
+                      TextButton(
+                        onPressed: () => _forgotPassword(),
+                        child: Text('Mot de passe oublié ?'),
+                      ),
+                      SizedBox(height: 20),
+                    ],
+                  ),
                 ),
-                ElevatedButton(
-                  onPressed: _attemptSignup,
-                  child: Text('S\'inscrire'),
-                ),
-              ],
-            ),
-            TextButton(
-              onPressed: _forgotPassword,
-              child: Text('Mot de passe oublié'),
+              ),
             ),
           ],
         ),

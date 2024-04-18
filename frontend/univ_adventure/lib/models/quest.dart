@@ -1,9 +1,7 @@
-import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:univ_adventure/models/rewards.dart';
 import 'package:univ_adventure/models/location.dart';
+import 'package:tuple/tuple.dart';
 
 class Quest {
   final String questId;
@@ -14,9 +12,8 @@ class Quest {
   final IconData icon;
   final String category;
   final int categoryLevel;
-  final Widget beforeText;
-  final Widget afterText;
-  final Function onValidate;
+  final String questType;
+
 
   Quest({
     required this.questId,
@@ -27,9 +24,8 @@ class Quest {
     required this.icon,
     required this.category,
     required this.categoryLevel,
-    required this.beforeText,
-    required this.afterText,
-    required this.onValidate,
+    required this.questType,
+
   });
 
   factory Quest.fromJson(Map<String, dynamic> json) {
@@ -42,9 +38,8 @@ class Quest {
       icon: json['icon'],
       category: json['category'],
       categoryLevel: json['category_level'],
-      beforeText: json['beforeText'],
-      afterText: json['afterText'],
-      onValidate: json['onValidate'],
+      questType: json['questType'],
+
     );
   }
 
@@ -58,13 +53,144 @@ class Quest {
       'icon': icon,
       'category': category,
       'category_level': categoryLevel,
-      'beforeText': beforeText,
-      'afterText': afterText,
-      'onValidate': onValidate,
+      'questType': questType,
+
+
     };
   }
 }
 
+class QuestLocation extends Quest {
+  final Location location;
+
+  QuestLocation({
+    required String questId,
+    required String title,
+    required int xp,
+    required String subtitle,
+    required String description,
+    required IconData icon,
+    required String category,
+    required int categoryLevel,
+    required String questType,
+    required this.location,
+  }) : super(
+          questId: questId,
+          title: title,
+          xp: xp,
+          subtitle: subtitle,
+          description: description,
+          icon: icon,
+          category: category,
+          categoryLevel: categoryLevel,
+          questType: questType,
+        );
+
+  factory QuestLocation.fromJson(Map<String, dynamic> json) {
+    return QuestLocation(
+      questId: json['questId'],
+      title: json['title'],
+      xp: json['xp'],
+      subtitle: json['subtitle'],
+      description: json['description'],
+      icon: json['icon'],
+      category: json['category'],
+      categoryLevel: json['category_level'],
+      location: Location.fromJson(json['location']),
+      questType: json['questType'],
+    );
+  }
+}
+
+class QuestQR extends Quest {
+  final String qrCode;
+
+  QuestQR({
+    required String questId,
+    required String title,
+    required int xp,
+    required String subtitle,
+    required String description,
+    required IconData icon,
+    required String category,
+    required int categoryLevel,
+    required String questType,
+    required this.qrCode,
+  }) : super(
+          questId: questId,
+          title: title,
+          xp: xp,
+          subtitle: subtitle,
+          description: description,
+          icon: icon,
+          category: category,
+          categoryLevel: categoryLevel,
+          questType: questType,
+        );
+
+  factory QuestQR.fromJson(Map<String, dynamic> json) {
+    return QuestQR(
+      questId: json['questId'],
+      title: json['title'],
+      xp: json['xp'],
+      subtitle: json['subtitle'],
+      description: json['description'],
+      icon: json['icon'],
+      category: json['category'],
+      categoryLevel: json['category_level'],
+      qrCode: json['qrCode'],
+      questType: json['questType'],
+    );
+  }
+}
+
+class QuestForm extends Quest {
+
+  final List<Tuple2<String, String>> form;
+
+  QuestForm({
+    required String questId,
+    required String title,
+    required int xp,
+    required String subtitle,
+    required String description,
+    required IconData icon,
+    required String category,
+    required int categoryLevel,
+    required String questType,
+
+    required this.form,
+  }) : super(
+          questId: questId,
+          title: title,
+          xp: xp,
+          subtitle: subtitle,
+          description: description,
+          icon: icon,
+          category: category,
+          categoryLevel: categoryLevel,
+          questType: questType,
+        );
+
+  factory QuestForm.fromJson(Map<String, dynamic> json) {
+    List<Tuple2<String, String>> form = [];
+    for (var item in json['form']) {
+      form.add(Tuple2(item['key'], item['value']));
+    }
+    return QuestForm(
+      questId: json['questId'],
+      title: json['title'],
+      xp: json['xp'],
+      subtitle: json['subtitle'],
+      description: json['description'],
+      icon: json['icon'],
+      category: json['category'],
+      categoryLevel: json['category_level'],
+      form: form,
+      questType: json['questType'],
+    );
+  }
+}
 
 /// Loads the quests from the Firestore database.
 ///
@@ -72,7 +198,26 @@ class Quest {
 Future<List<Quest>> loadQuests() async {
   QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('quests').get();
   List<QueryDocumentSnapshot> documents = querySnapshot.docs;
-  return documents.map((doc) => Quest.fromJson(doc.data() as Map<String, dynamic>)).toList();
+  List<Quest> quests = [];
+  for (var doc in documents) {
+    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+    String questType = data['questType'];
+    switch (questType) {
+      case 'location':
+        quests.add(QuestLocation.fromJson(data));
+        break;
+      case 'qr':
+        quests.add(QuestQR.fromJson(data));
+        break;
+      case 'form':
+        quests.add(QuestForm.fromJson(data));
+        break;
+      default:
+        quests.add(Quest.fromJson(data));
+        break;
+    }
+  }
+  return quests;
 }
 
 /// Retrieves the completion count of a quest.

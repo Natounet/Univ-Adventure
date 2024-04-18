@@ -7,7 +7,7 @@ import 'package:univ_adventure/models/location.dart';
 
 class Quest {
   final String questId;
-  final String name;
+  final String title;
   final int xp;
   final String subtitle;
   final String description;
@@ -20,7 +20,7 @@ class Quest {
 
   Quest({
     required this.questId,
-    required this.name,
+    required this.title,
     required this.xp,
     required this.subtitle,
     required this.description,
@@ -35,7 +35,7 @@ class Quest {
   factory Quest.fromJson(Map<String, dynamic> json) {
     return Quest(
       questId: json['questId'],
-      name: json['name'],
+      title: json['name'],
       xp: json['xp'],
       subtitle: json['subtitle'],
       description: json['description'],
@@ -51,7 +51,7 @@ class Quest {
   Map<String, dynamic> toJson() {
     return {
       'questId': questId,
-      'name': name,
+      'name': title,
       'xp': xp,
       'subtitle': subtitle,
       'description': description,

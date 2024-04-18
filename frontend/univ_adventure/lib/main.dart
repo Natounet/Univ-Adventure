@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:univ_adventure/models/quest.dart';
@@ -20,7 +18,7 @@ final _router = GoRouter(
     GoRoute(
       path: "/",
       builder: (context, state) =>
-          UserManager.getUserID() == null ? const UserAuth() : HomePage(),
+          UserManager.getUserID() == null ? const UserAuth() : const HomePage(),
     ),
     ShellRoute(
       builder: (context, state, child) => Scaffold(
@@ -44,7 +42,7 @@ final _router = GoRouter(
       routes: [
         GoRoute(
           path: "/home",
-          builder: (context, state) => HomePage(),
+          builder: (context, state) => const HomePage(),
         ),
         GoRoute(
           path: "/profile",
@@ -54,7 +52,7 @@ final _router = GoRouter(
     ),
     GoRoute(
       path: "/home",
-      builder: (context, state) => HomePage(),
+      builder: (context, state) => const HomePage(),
     ),
     GoRoute(
       path: "/auth",
@@ -88,7 +86,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({Key? key}) : super(key: key);
+  MyApp({super.key});
 
   final Quest quest = Quest(
     questId: "1",

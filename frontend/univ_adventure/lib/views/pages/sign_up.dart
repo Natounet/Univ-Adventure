@@ -7,8 +7,7 @@ class SignupPage extends StatefulWidget {
   final String userID;
   final String userEmail;
 
-  SignupPage({Key? key, required this.userID, required this.userEmail})
-      : super(key: key);
+  const SignupPage({super.key, required this.userID, required this.userEmail});
 
   @override
   _SignupPageState createState() => _SignupPageState();

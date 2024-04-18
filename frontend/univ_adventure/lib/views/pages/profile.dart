@@ -17,13 +17,14 @@ class ProfilePage extends StatelessWidget {
       future: getUser(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           return Center(child: Text('Erreur: ${snapshot.error}'));
         } else {
           var user = snapshot.data?.value;
           if (user == null) {
-            return Center(child: Text('Aucune donnée utilisateur disponible'));
+            return const Center(
+                child: Text('Aucune donnée utilisateur disponible'));
           }
 
           return Scaffold(
@@ -31,7 +32,7 @@ class ProfilePage extends StatelessWidget {
               title: const Text('Profil'),
               actions: [
                 IconButton(
-                  icon: Icon(Icons.edit),
+                  icon: const Icon(Icons.edit),
                   onPressed: () {
                     // Logique pour modifier le profil
                   },
@@ -43,27 +44,27 @@ class ProfilePage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text(user.username,
-                      style: Theme.of(context).textTheme.headline6),
+                      style: Theme.of(context).textTheme.titleLarge),
                   Text(user.email),
-                  Divider(),
+                  const Divider(),
                   ListTile(
-                    leading: Icon(Icons.person),
+                    leading: const Icon(Icons.person),
                     title: Text('Genre : ${user.gender}'),
                   ),
                   ListTile(
-                    leading: Icon(Icons.calendar_today),
+                    leading: const Icon(Icons.calendar_today),
                     title:
                         Text('Date de création : ${user.createdAt.toString()}'),
                   ),
                   ListTile(
-                    leading: Icon(Icons.score),
+                    leading: const Icon(Icons.score),
                     title: Text('Points : ${user.points}'),
                   ),
                   ListTile(
-                    leading: Icon(Icons.badge),
-                    title: Text('Badges :'),
+                    leading: const Icon(Icons.badge),
+                    title: const Text('Badges :'),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: user.badges
@@ -71,13 +72,12 @@ class ProfilePage extends StatelessWidget {
                           .toList(),
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
                       UserManager.removeUserID();
                       context.go("/auth");
                     },
-                    child: Text('Déconnecter'),
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
                       backgroundColor: Colors.red,
@@ -85,6 +85,7 @@ class ProfilePage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(30.0),
                       ),
                     ),
+                    child: const Text('Déconnecter'),
                   ),
                 ],
               ),

@@ -5,7 +5,7 @@ import 'package:univ_adventure/components/xp.dart';
 import 'package:univ_adventure/models/quest.dart';
 
 class QuestCardLocation extends StatelessWidget {
-  final Quest quest;
+  final QuestLocation quest;
 
   QuestCardLocation({required this.quest, Key? key}) : super(key: key);
 
@@ -112,7 +112,17 @@ class QuestCardLocation extends StatelessWidget {
             ), // Ajoute une ligne horizontale
             const SizedBox(height: 10),
 
-            quest.beforeText,
+            Container(
+              height: 200,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  scale: 0.9,
+                  image: NetworkImage(quest.imagePath),
+                  fit: BoxFit.fill,
+                ),
+              ),
+            ),
+
             const SizedBox(height: 10),
 
             Container(
@@ -140,10 +150,6 @@ class QuestCardLocation extends StatelessWidget {
             ),
             const SizedBox(height: 10),
 
-            quest.afterText,
-
-            const SizedBox(height: 10),
-
             Container(
               width: MediaQuery.of(context).size.width * 0.95,
               decoration: BoxDecoration(
@@ -153,7 +159,7 @@ class QuestCardLocation extends StatelessWidget {
               ),
               child: TextButton(
                 onPressed: () {
-                  quest.onValidate();
+                  
                 },
                 child: const Text('Valider la quête',
                     style: TextStyle(color: Colors.black, fontSize: 20)),

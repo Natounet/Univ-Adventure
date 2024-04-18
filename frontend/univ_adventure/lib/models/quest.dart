@@ -62,6 +62,7 @@ class Quest {
 
 class QuestLocation extends Quest {
   final Location location;
+  final String imagePath; // Add this line
 
   QuestLocation({
     required String questId,
@@ -74,6 +75,7 @@ class QuestLocation extends Quest {
     required int categoryLevel,
     required String questType,
     required this.location,
+    required this.imagePath, // Add this line
   }) : super(
           questId: questId,
           title: title,
@@ -97,6 +99,7 @@ class QuestLocation extends Quest {
       category: json['category'],
       categoryLevel: json['category_level'],
       location: Location.fromJson(json['location']),
+      imagePath: json['imagePath'], // Add this line
       questType: json['questType'],
     );
   }

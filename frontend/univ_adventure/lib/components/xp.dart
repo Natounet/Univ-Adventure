@@ -10,9 +10,10 @@ class XPComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(5.0 * scale),
+      padding: EdgeInsets.symmetric(horizontal: 5.0 * scale, vertical: 2.5 * scale),
+
       decoration: BoxDecoration(
-        color: Color.fromARGB(255, 93, 189, 149),
+        color: Color.fromARGB(255,130, 227, 192),
         borderRadius: BorderRadius.circular(15 * scale),
       ),
       child: Row(

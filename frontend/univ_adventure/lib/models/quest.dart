@@ -1,7 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:univ_adventure/models/location.dart';
-import 'package:tuple/tuple.dart';
+import "package:cloud_firestore/cloud_firestore.dart";
+import "package:flutter/material.dart";
+import "package:univ_adventure/models/location.dart";
+import "package:tuple/tuple.dart";
 
 class Quest {
   final String questId;
@@ -30,32 +30,29 @@ class Quest {
 
   factory Quest.fromJson(Map<String, dynamic> json) {
     return Quest(
-      questId: json['questId'],
-      title: json['title'],
-      xp: json['xp'],
-      subtitle: json['subtitle'],
-      description: json['description'],
-      iconPath: json['icon'],
-      category: json['category'],
-      categoryLevel: json['category_level'],
-      questType: json['questType'],
-
+      questId: json["questId"],
+      title: json["title"],
+      xp: json["xp"],
+      subtitle: json["subtitle"],
+      description: json["description"],
+      iconPath: json["icon"],
+      category: json["category"],
+      categoryLevel: json["category_level"],
+      questType: json["questType"],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'questId': questId,
-      'title': title,
-      'xp': xp,
-      'subtitle': subtitle,
-      'description': description,
-      'icon': iconPath,
-      'category': category,
-      'category_level': categoryLevel,
-      'questType': questType,
-
-
+      "questId": questId,
+      "title": title,
+      "xp": xp,
+      "subtitle": subtitle,
+      "description": description,
+      "icon": iconPath,
+      "category": category,
+      "category_level": categoryLevel,
+      "questType": questType,
     };
   }
 }
@@ -90,18 +87,34 @@ class QuestLocation extends Quest {
 
   factory QuestLocation.fromJson(Map<String, dynamic> json) {
     return QuestLocation(
-      questId: json['questId'],
-      title: json['title'],
-      xp: json['xp'],
-      subtitle: json['subtitle'],
-      description: json['description'],
-      iconPath: json['icon'],
-      category: json['category'],
-      categoryLevel: json['category_level'],
-      location: Location.fromJson(json['location']),
-      imagePath: json['imagePath'], // Add this line
-      questType: json['questType'],
+      questId: json["questId"],
+      title: json["title"],
+      xp: json["xp"],
+      subtitle: json["subtitle"],
+      description: json["description"],
+      iconPath: json["icon"],
+      category: json["category"],
+      categoryLevel: json["category_level"],
+      location: Location.fromJson(json["location"]),
+      imagePath: json["imagePath"], // Add this line
+      questType: json["questType"],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "questId": questId,
+      "title": title,
+      "xp": xp,
+      "subtitle": subtitle,
+      "description": description,
+      "icon": iconPath,
+      "category": category,
+      "category_level": categoryLevel,
+      "location": location.toJson(),
+      "imagePath": imagePath, // Add this line
+      "questType": questType,
+    };
   }
 }
 
@@ -133,16 +146,16 @@ class QuestQR extends Quest {
 
   factory QuestQR.fromJson(Map<String, dynamic> json) {
     return QuestQR(
-      questId: json['questId'],
-      title: json['title'],
-      xp: json['xp'],
-      subtitle: json['subtitle'],
-      description: json['description'],
-      iconPath: json['icon'],
-      category: json['category'],
-      categoryLevel: json['category_level'],
-      qrCode: json['qrCode'],
-      questType: json['questType'],
+      questId: json["questId"],
+      title: json["title"],
+      xp: json["xp"],
+      subtitle: json["subtitle"],
+      description: json["description"],
+      iconPath: json["icon"],
+      category: json["category"],
+      categoryLevel: json["category_level"],
+      qrCode: json["qrCode"],
+      questType: json["questType"],
     );
   }
 }
@@ -177,20 +190,20 @@ class QuestForm extends Quest {
 
   factory QuestForm.fromJson(Map<String, dynamic> json) {
     List<Tuple2<String, String>> form = [];
-    for (var item in json['form']) {
-      form.add(Tuple2(item['key'], item['value']));
+    for (var item in json["form"]) {
+      form.add(Tuple2(item["key"], item["value"]));
     }
     return QuestForm(
-      questId: json['questId'],
-      title: json['title'],
-      xp: json['xp'],
-      subtitle: json['subtitle'],
-      description: json['description'],
-      iconPath: json['icon'],
-      category: json['category'],
-      categoryLevel: json['category_level'],
+      questId: json["questId"],
+      title: json["title"],
+      xp: json["xp"],
+      subtitle: json["subtitle"],
+      description: json["description"],
+      iconPath: json["icon"],
+      category: json["category"],
+      categoryLevel: json["category_level"],
       form: form,
-      questType: json['questType'],
+      questType: json["questType"],
     );
   }
 }
@@ -199,20 +212,20 @@ class QuestForm extends Quest {
 ///
 /// Returns a list of [Quest] objects.
 Future<List<Quest>> loadQuests() async {
-  QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('quests').get();
+  QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection("quests").get();
   List<QueryDocumentSnapshot> documents = querySnapshot.docs;
   List<Quest> quests = [];
   for (var doc in documents) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-    String questType = data['questType'];
+    String questType = data["questType"];
     switch (questType) {
-      case 'location':
+      case "location":
         quests.add(QuestLocation.fromJson(data));
         break;
-      case 'qr':
+      case "qr":
         quests.add(QuestQR.fromJson(data));
         break;
-      case 'form':
+      case "form":
         quests.add(QuestForm.fromJson(data));
         break;
       default:
@@ -231,9 +244,8 @@ Future<List<Quest>> loadQuests() async {
 /// Returns the completion count as a [Future] of [int].
 Future<int> getQuestCompletionCount(String questId) async {
   QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-      .collection('users')
-      .where('questsCompleted', arrayContains: questId)
+      .collection("users")
+      .where("questsCompleted", arrayContains: questId)
       .get();
   return querySnapshot.docs.length;
 }
-

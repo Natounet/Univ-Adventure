@@ -1,11 +1,14 @@
 
 import 'package:flutter/material.dart';
+import 'package:univ_adventure/components/quest_card.dart';
 
-import 'package:univ_adventure/views/pages/homepage.dart';
-import 'package:univ_adventure/views/pages/signUp.dart';
-import 'package:univ_adventure/views/pages/userAuth.dart';
+import 'package:univ_adventure/views/pages/home_page.dart';
+import 'package:univ_adventure/views/pages/quest_detailed.dart';
+import 'package:univ_adventure/views/pages/sign_up.dart';
+import 'package:univ_adventure/views/pages/user_auth.dart';
 import 'package:univ_adventure/views/pages/profile.dart';
-import 'views/pages/userAuth.dart';
+import 'package:univ_adventure/models/quest.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 
 import 'services/user_manager.dart'; // Assurez-vous d'importer la classe UserManager correctement
@@ -29,6 +32,22 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
+  
+  final Quest quest = Quest(
+    questId: "1",
+    title: "Lac au connard",
+    subtitle: "Rends-toi au lac au connard.. canard !",
+    description: "Près de l'ISTIC et du batiment 12D ce trouve un petit lac artificiel très sympa.\nRends-y toi et active ta localisation pour valider la quête.",
+    icon: LucideIcons.mapPin,
+    xp: 300,
+    category: "Exploration",
+    categoryLevel: 1,
+    beforeText: Image(image: const AssetImage("assets/images/carteTest.png")),
+    afterText: Container(),
+    onValidate: () {
+      print("Quête validée !");
+    },
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -36,15 +55,15 @@ class MyApp extends StatelessWidget {
       onGenerateRoute: (settings) {
         if (settings.name == '/') {
           return MaterialPageRoute(
-            builder: (context) => UserManager.getUserID() == null ? UserAuth() : HomePage(),
+            builder: (context) => UserManager.getUserID() == null ? UserAuth() : QuestCard(quest: quest,),
           );
         } else if (settings.name == '/home') {
           return MaterialPageRoute(
-            builder: (context) => HomePage(),
+            builder: (context) => QuestCard(quest: quest,),
           );
         } else if (settings.name == '/auth') {
           return MaterialPageRoute(
-            builder: (context) => UserAuth(),
+            builder: (context) => const UserAuth(),
           );
         } else if (settings.name == '/signup') {
           final args = settings.arguments as Map<String, dynamic>;
@@ -54,7 +73,7 @@ class MyApp extends StatelessWidget {
         }
         else if (settings.name == '/profile') {
           return MaterialPageRoute(
-            builder: (context) => ProfilePage(),
+            builder: (context) => const ProfilePage(),
           );
         }
         // Handle other routes

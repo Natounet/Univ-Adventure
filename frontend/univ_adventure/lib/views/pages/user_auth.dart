@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:go_router/go_router.dart';
 import 'package:univ_adventure/services/user_manager.dart';
 
 class UserAuth extends StatefulWidget {
@@ -30,7 +31,8 @@ class UserAuthState extends State<UserAuth> {
       return;
     }
     try {
-      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+      UserCredential userCredential =
+          await _auth.createUserWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
@@ -46,7 +48,8 @@ class UserAuthState extends State<UserAuth> {
   Future<void> _handleUserCredential(UserCredential userCredential) async {
     String userId = userCredential.user!.uid;
 
-    final QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance
+    final QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
+        .instance
         .collection('users')
         .where('userID', isEqualTo: userId)
         .get();
@@ -54,12 +57,13 @@ class UserAuthState extends State<UserAuth> {
     if (snapshot.docs.isNotEmpty) {
       UserManager.addUserID(userId);
       if (mounted) {
-        Navigator.pushReplacementNamed(context, '/home');
+        context.go("/home");
       }
     } else {
       if (mounted) {
-        Navigator.pushNamed(context, '/signup',
-            arguments: {'userID': userId, 'userEmail': userCredential.user!.email});
+        context.go(
+          "/signup?userID=$userId&userEmail=${userCredential.user!.email}",
+        );
       }
     }
   }
@@ -85,17 +89,19 @@ class UserAuthState extends State<UserAuth> {
 
   Future<void> _forgotPassword() async {
     if (_emailController.text.isEmpty) {
-      _showSnackBar('Veuillez entrer votre email pour réinitialiser le mot de passe');
+      _showSnackBar(
+          'Veuillez entrer votre email pour réinitialiser le mot de passe');
       return;
     }
     try {
       await _auth.sendPasswordResetEmail(email: _emailController.text.trim());
-      _showSnackBar('Email de réinitialisation envoyé', backgroundColor: Colors.blue);
+      _showSnackBar('Email de réinitialisation envoyé',
+          backgroundColor: Colors.blue);
     } catch (e) {
       _showSnackBar('Erreur lors de l\'envoi de l\'email de réinitialisation');
     }
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,8 +114,11 @@ class UserAuthState extends State<UserAuth> {
         child: Column(
           children: [
             const SizedBox(height: 20),
-            Image.asset('assets/images/logo.png', height: 100),  // Assurez-vous que 'logo.png' est ajouté dans votre dossier assets
-            const SizedBox(height: 20), // Add some space between the logo and the card
+            Image.asset('assets/images/logo.png',
+                height:
+                    100), // Assurez-vous que 'logo.png' est ajouté dans votre dossier assets
+            const SizedBox(
+                height: 20), // Add some space between the logo and the card
             Card(
               elevation: 8.0,
               child: Padding(
@@ -155,12 +164,14 @@ class UserAuthState extends State<UserAuth> {
                         children: [
                           ElevatedButton(
                             onPressed: () => _attemptSignup(),
-                            style: ElevatedButton.styleFrom(minimumSize: const Size(140, 50)),
+                            style: ElevatedButton.styleFrom(
+                                minimumSize: const Size(140, 50)),
                             child: const Text('S\'inscrire'),
                           ),
                           ElevatedButton(
                             onPressed: () => _attemptLogin(),
-                            style: ElevatedButton.styleFrom(minimumSize: const Size(140, 50)),
+                            style: ElevatedButton.styleFrom(
+                                minimumSize: const Size(140, 50)),
                             child: const Text('Se connecter'),
                           ),
                         ],

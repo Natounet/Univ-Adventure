@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:univ_adventure/services/user_manager.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -6,7 +7,8 @@ class SignupPage extends StatefulWidget {
   final String userID;
   final String userEmail;
 
-  SignupPage({Key? key, required this.userID, required this.userEmail}) : super(key: key);
+  SignupPage({Key? key, required this.userID, required this.userEmail})
+      : super(key: key);
 
   @override
   _SignupPageState createState() => _SignupPageState();
@@ -17,7 +19,8 @@ class _SignupPageState extends State<SignupPage> {
   String? _selectedGender;
 
   void createUser(String username) {
-    UserManager.addUserID(widget.userID); // Add the user's ID to the shared preferences
+    UserManager.addUserID(
+        widget.userID); // Add the user's ID to the shared preferences
 
     // Create a new user document in the 'users' collection
     FirebaseFirestore.instance.collection('users').doc(widget.userID).set({
@@ -30,11 +33,11 @@ class _SignupPageState extends State<SignupPage> {
       'badges': [],
       'questsCompleted': [],
     }).then((value) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Inscription réussie'),
         backgroundColor: Colors.green,
       ));
-      Navigator.pushReplacementNamed(context, '/home');
+      context.go("/home");
     }).catchError((error) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('Erreur d\'inscription: $error'),
@@ -55,14 +58,14 @@ class _SignupPageState extends State<SignupPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
+              const Text(
                 'Bienvenue !',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextFormField(
                 controller: _usernameController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Nom d\'utilisateur',
                   border: OutlineInputBorder(),
                 ),
@@ -73,7 +76,7 @@ class _SignupPageState extends State<SignupPage> {
                   return null;
                 },
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -107,19 +110,22 @@ class _SignupPageState extends State<SignupPage> {
                   ),
                 ],
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  if (_usernameController.text.isNotEmpty && _selectedGender != null) {
+                  if (_usernameController.text.isNotEmpty &&
+                      _selectedGender != null) {
                     createUser(_usernameController.text);
                   } else {
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text('Veuillez remplir tous les champs'),
-                      backgroundColor: Colors.red,
-                    ));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Veuillez remplir tous les champs'),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
                   }
                 },
-                child: Text('S\'inscrire'),
+                child: const Text('S\'inscrire'),
               ),
             ],
           ),

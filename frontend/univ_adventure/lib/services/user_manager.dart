@@ -119,10 +119,8 @@ class UserManager {
         if (!questsCompleted.contains(quest.questId)) {
           questsCompleted.add(quest.questId);
           await usersCollection.doc(userID).update({'questsCompleted': questsCompleted});
-          addPoints(quest.rewards.points);
-          for (Badge badge in quest.rewards.badges) {
-            addBadge(badge.name);
-          }
+          addPoints(quest.xp);
+          
         }
       }
     }

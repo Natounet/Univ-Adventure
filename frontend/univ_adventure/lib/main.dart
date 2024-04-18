@@ -1,8 +1,8 @@
 import 'dart:js';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:univ_adventure/models/quest.dart';
 
 import 'package:univ_adventure/views/pages/home_page.dart';
 import 'package:univ_adventure/views/pages/sign_up.dart';
@@ -89,6 +89,23 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
+
+  final Quest quest = Quest(
+    questId: "1",
+    title: "Lac au connard",
+    subtitle: "Rends-toi au lac au connard.. canard !",
+    description:
+        "Près de l'ISTIC et du batiment 12D ce trouve un petit lac artificiel très sympa.\nRends-y toi et active ta localisation pour valider la quête.",
+    icon: LucideIcons.mapPin,
+    xp: 300,
+    category: "Exploration",
+    categoryLevel: 1,
+    beforeText: const Image(image: AssetImage("assets/images/carteTest.png")),
+    afterText: Container(),
+    onValidate: () {
+      print("Quête validée !");
+    },
+  );
 
   @override
   Widget build(BuildContext context) {

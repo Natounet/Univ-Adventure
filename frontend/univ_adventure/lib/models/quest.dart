@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:univ_adventure/models/rewards.dart';
 import 'package:univ_adventure/models/location.dart';
@@ -7,53 +8,60 @@ import 'package:univ_adventure/models/location.dart';
 class Quest {
   final String questId;
   final String title;
-  final String subtitle; // Added subtitle field
+  final int xp;
+  final String subtitle;
   final String description;
-  final Location location;
-  final bool isActive;
-  final String qrCode;
-  final String method;
-  final dynamic? startTime;
-  final dynamic? endTime;
-  final Rewards rewards;
-  final String imageUrl;
-  final String iconUrl; // Added iconUrl field
-  final String category; // Added category field
+  final IconData icon;
+  final String category;
+  final int categoryLevel;
+  final Widget beforeText;
+  final Widget afterText;
+  final Function onValidate;
 
   Quest({
     required this.questId,
     required this.title,
-    required this.subtitle, // Added subtitle parameter
+    required this.xp,
+    required this.subtitle,
     required this.description,
-    required this.location,
-    required this.isActive,
-    required this.qrCode,
-    required this.method,
-    this.startTime,
-    this.endTime,
-    required this.rewards,
-    required this.imageUrl,
-    required this.iconUrl, // Added iconUrl parameter
-    required this.category, // Added category parameter
+    required this.icon,
+    required this.category,
+    required this.categoryLevel,
+    required this.beforeText,
+    required this.afterText,
+    required this.onValidate,
   });
 
   factory Quest.fromJson(Map<String, dynamic> json) {
     return Quest(
       questId: json['questId'],
       title: json['title'],
-      subtitle: json['subtitle'], // Added subtitle field
+      xp: json['xp'],
+      subtitle: json['subtitle'],
       description: json['description'],
-      location: Location.fromJson(Map<String, dynamic>.from(json['location'])),
-      isActive: json['isActive'],
-      qrCode: json['qrCode'],
-      method: json['method'],
-      startTime: json['startTime'],
-      endTime: json['endTime'],
-      rewards: Rewards.fromJson(Map<String, dynamic>.from(json['rewards'])),
-      imageUrl: json['imageUrl'],
-      iconUrl: json['iconUrl'], // Added iconUrl field
-      category: json['category'], // Added category field
+      icon: json['icon'],
+      category: json['category'],
+      categoryLevel: json['category_level'],
+      beforeText: json['beforeText'],
+      afterText: json['afterText'],
+      onValidate: json['onValidate'],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'questId': questId,
+      'title': title,
+      'xp': xp,
+      'subtitle': subtitle,
+      'description': description,
+      'icon': icon,
+      'category': category,
+      'category_level': categoryLevel,
+      'beforeText': beforeText,
+      'afterText': afterText,
+      'onValidate': onValidate,
+    };
   }
 }
 

@@ -33,7 +33,12 @@ class QuestCardLocation extends StatelessWidget {
                         radius: 30,
                         backgroundColor:
                             iconColor, // Utilisez la variable de couleur ici
-                        child: new Icon(quest.icon, color: Colors.black),
+                        child: 
+                        Image.network(
+                          quest.iconPath,
+                          width: 40,
+                          height: 40,
+                        ),
                       ),
                     ),
                   ),

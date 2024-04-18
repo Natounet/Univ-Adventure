@@ -11,7 +11,7 @@ class BadgeComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(4),
+      padding: EdgeInsets.all(0),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -24,6 +24,7 @@ class BadgeComponent extends StatelessWidget {
             ),
             child: Icon(
               badgeIcon,
+                size: 24 * scale,
               color: Colors.black,
             ),
           ),

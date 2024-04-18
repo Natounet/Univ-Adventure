@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../models/quests.dart';
+import '../models/quest.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class QuestCard extends StatefulWidget {
@@ -7,7 +7,12 @@ class QuestCard extends StatefulWidget {
   final VoidCallback onTap;
   final bool isCompleted;
 
-  const QuestCard({Key? key, required this.quest, required this.onTap, required this.isCompleted}) : super(key: key);
+  const QuestCard(
+      {Key? key,
+      required this.quest,
+      required this.onTap,
+      required this.isCompleted})
+      : super(key: key);
 
   @override
   QuestCardState createState() => QuestCardState();
@@ -17,11 +22,15 @@ class QuestCardState extends State<QuestCard> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<DocumentSnapshot>(
-      stream: FirebaseFirestore.instance.collection('users').doc('userId').snapshots(), // Replace 'userId' with actual user id
+      stream: FirebaseFirestore.instance
+          .collection('users')
+          .doc('userId')
+          .snapshots(), // Replace 'userId' with actual user id
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           var user = snapshot.data!.data() as Map<String, dynamic>;
-          bool isCompleted = user['questsCompleted'].contains(widget.quest.questId);
+          bool isCompleted =
+              user['questsCompleted'].contains(widget.quest.questId);
 
           return Card(
             elevation: 4.0,
@@ -40,9 +49,14 @@ class QuestCardState extends State<QuestCard> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(widget.quest.title, style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)),
+                          Text(widget.quest.title,
+                              style: const TextStyle(
+                                  fontSize: 18.0, fontWeight: FontWeight.bold)),
                           const SizedBox(height: 10),
-                          Text(widget.quest.description, maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 14.0)),
+                          Text(widget.quest.description,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(fontSize: 14.0)),
                         ],
                       ),
                     ),

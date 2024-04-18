@@ -11,7 +11,7 @@ class Quest {
   final int xp;
   final String subtitle;
   final String description;
-  final String icon;
+  final IconData icon;
   final String category;
   final int categoryLevel;
   final Widget beforeText;
@@ -35,7 +35,7 @@ class Quest {
   factory Quest.fromJson(Map<String, dynamic> json) {
     return Quest(
       questId: json['questId'],
-      title: json['name'],
+      title: json['title'],
       xp: json['xp'],
       subtitle: json['subtitle'],
       description: json['description'],
@@ -51,7 +51,7 @@ class Quest {
   Map<String, dynamic> toJson() {
     return {
       'questId': questId,
-      'name': title,
+      'title': title,
       'xp': xp,
       'subtitle': subtitle,
       'description': description,

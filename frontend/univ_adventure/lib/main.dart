@@ -27,14 +27,30 @@ final _router = GoRouter(
         ),
         body: child,
         bottomNavigationBar: NavigationBar(
+          onDestinationSelected: (int index) {
+            if (index == 0) {
+              context.go("/home");
+            } else if (index == 1) {
+              context.go("/classement");
+            } else if (index == 2) {
+              context.go("/market");
+            }
+          },
+          selectedIndex: ["/home", "/classement", "/market"]
+                  .indexOf(state.matchedLocation) ??
+              0,
           destinations: const <Widget>[
             NavigationDestination(
-              icon: Icon(LucideIcons.home),
+              icon: Icon(LucideIcons.scroll),
               label: "Accueil",
             ),
             NavigationDestination(
-              icon: Icon(LucideIcons.user),
-              label: "Profil",
+              icon: Icon(LucideIcons.trophy),
+              label: "Classement",
+            ),
+            NavigationDestination(
+              icon: Icon(LucideIcons.store),
+              label: "Marché",
             )
           ],
         ),
@@ -45,14 +61,14 @@ final _router = GoRouter(
           builder: (context, state) => const HomePage(),
         ),
         GoRoute(
-          path: "/profile",
-          builder: (context, state) => const ProfilePage(),
+          path: "/classement",
+          builder: (context, state) => Container(),
         ),
+        GoRoute(
+          path: "/market",
+          builder: (context, state) => Container(),
+        )
       ],
-    ),
-    GoRoute(
-      path: "/home",
-      builder: (context, state) => const HomePage(),
     ),
     GoRoute(
       path: "/auth",

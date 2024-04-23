@@ -14,7 +14,6 @@ class Quest {
   final int categoryLevel;
   final String questType;
 
-
   Quest({
     required this.questId,
     required this.title,
@@ -25,7 +24,6 @@ class Quest {
     required this.category,
     required this.categoryLevel,
     required this.questType,
-
   });
 
   factory Quest.fromJson(Map<String, dynamic> json) {
@@ -161,8 +159,7 @@ class QuestQR extends Quest {
 }
 
 class QuestForm extends Quest {
-
-  final List<Tuple2<String, String>> form;
+  final List<(String, String)> form;
 
   QuestForm({
     required String questId,
@@ -174,7 +171,6 @@ class QuestForm extends Quest {
     required String category,
     required int categoryLevel,
     required String questType,
-
     required this.form,
   }) : super(
           questId: questId,
@@ -189,9 +185,9 @@ class QuestForm extends Quest {
         );
 
   factory QuestForm.fromJson(Map<String, dynamic> json) {
-    List<Tuple2<String, String>> form = [];
+    List<(String, String)> form = [];
     for (var item in json["form"]) {
-      form.add(Tuple2(item["key"], item["value"]));
+      form.add((item["key"], item["value"]));
     }
     return QuestForm(
       questId: json["questId"],
@@ -212,7 +208,8 @@ class QuestForm extends Quest {
 ///
 /// Returns a list of [Quest] objects.
 Future<List<Quest>> loadQuests() async {
-  QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection("quests").get();
+  QuerySnapshot querySnapshot =
+      await FirebaseFirestore.instance.collection("quests").get();
   List<QueryDocumentSnapshot> documents = querySnapshot.docs;
   List<Quest> quests = [];
   for (var doc in documents) {

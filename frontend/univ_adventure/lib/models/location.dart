@@ -3,7 +3,7 @@ class Location {
   final double latitude;
   final double longitude;
 
-  Location({
+  const Location({
     required this.name,
     required this.latitude,
     required this.longitude,

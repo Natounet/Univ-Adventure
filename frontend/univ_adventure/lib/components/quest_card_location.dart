@@ -33,8 +33,7 @@ class QuestCardLocation extends StatelessWidget {
                         radius: 30,
                         backgroundColor:
                             iconColor, // Utilisez la variable de couleur ici
-                        child: 
-                        Image.network(
+                        child: Image.network(
                           quest.iconPath,
                           width: 40,
                           height: 40,
@@ -70,7 +69,7 @@ class QuestCardLocation extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                BadgeComponent(
+                                QuestBadge(
                                   badgeName: "Exploration",
                                   badgeIcon: Icons.terminal,
                                   circleColor:
@@ -132,7 +131,8 @@ class QuestCardLocation extends StatelessWidget {
 
             Container(
               padding: const EdgeInsets.all(16),
-              alignment: Alignment.topLeft, // Add this line to align the text to the left
+              alignment: Alignment
+                  .topLeft, // Add this line to align the text to the left
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -142,13 +142,16 @@ class QuestCardLocation extends StatelessWidget {
                       fontWeight: FontWeight.w900,
                       fontSize: 16,
                     ),
-                    textAlign: TextAlign.left, // Add this line to align the text to the left
+                    textAlign: TextAlign
+                        .left, // Add this line to align the text to the left
                   ),
                   const SizedBox(height: 8),
                   Text(
                     quest.description,
-                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-                    textAlign: TextAlign.left, // Add this line to align the text to the left
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.w700),
+                    textAlign: TextAlign
+                        .left, // Add this line to align the text to the left
                   )
                 ],
               ),
@@ -163,9 +166,7 @@ class QuestCardLocation extends StatelessWidget {
                 borderRadius: BorderRadius.circular(25),
               ),
               child: TextButton(
-                onPressed: () {
-                  
-                },
+                onPressed: () {},
                 child: const Text('Valider la quête',
                     style: TextStyle(color: Colors.black, fontSize: 20)),
               ),
@@ -176,5 +177,3 @@ class QuestCardLocation extends StatelessWidget {
     );
   }
 }
-
-

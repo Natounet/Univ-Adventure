@@ -5,15 +5,15 @@ class XPComponent extends StatelessWidget {
   final int xp;
   final double scale;
 
-  XPComponent({required this.xp, this.scale = 1.0});
+  const XPComponent({required this.xp, this.scale = 1.0});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 5.0 * scale, vertical: 2.5 * scale),
-
+      padding:
+          EdgeInsets.symmetric(horizontal: 7.0 * scale, vertical: 2.5 * scale),
       decoration: BoxDecoration(
-        color: Color.fromARGB(255,130, 227, 192),
+        color: Color.fromARGB(255, 130, 227, 192),
         borderRadius: BorderRadius.circular(15 * scale),
       ),
       child: Row(
@@ -23,7 +23,7 @@ class XPComponent extends StatelessWidget {
             xp.toString(),
             style: TextStyle(
               color: Colors.black,
-              fontSize: 16 * scale,
+              fontSize: 11 * scale,
               fontWeight: FontWeight.bold,
             ),
           ),

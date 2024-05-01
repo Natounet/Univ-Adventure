@@ -29,6 +29,7 @@ class HomePage extends StatelessWidget {
       ),
       imagePath:
           "https://docs.flutter.dev/assets/images/dash/dash-fainting.gif",
+      regularity: null,
     );
 
     final QuestForm quest2 = QuestForm(
@@ -43,14 +44,65 @@ class HomePage extends StatelessWidget {
       categoryLevel: 1,
       questType: "form",
       form: [("lien de l'emploi du temps", "???")],
+      regularity: null,
     );
 
-    final List<Quest> allQuests = [quest, quest, quest, quest, quest2, quest2];
+    final QuestLocation queteRU = QuestLocation(
+      questId: "2",
+      title: "Mange au RU",
+      subtitle: "Rends-toi au RU et mange un bon repas !",
+      description:
+          "Rends-toi au RU et mange un bon repas. Active ta localisation pour valider la quête.",
+      iconPath: "https://docs.flutter.dev/assets/images/dash/dash-fainting.gif",
+      xp: 300,
+      category: "Quêtes Récurrentes",
+      categoryLevel: 1,
+      questType: "form",
+      location: const Location(
+        name: "RU Astrolabe",
+        latitude: 48.115332,
+        longitude: -1.637858,
+      ),
+      imagePath:
+          "https://docs.flutter.dev/assets/images/dash/dash-fainting.gif",
+      regularity: const Duration(days: 1),
+    );
+
+    final QuestForm questNews = QuestForm(
+      questId: "2",
+      title: "Découvre la programmation du diapason",
+      subtitle: "La programmation du diapason est sortie, va la lire !",
+      description:
+          "Rends-toi sur le site du diapason, et récupère le lien de la programmation. Colle le lien ici pour valider la quête.",
+      iconPath: "https://docs.flutter.dev/assets/images/dash/dash-fainting.gif",
+      xp: 300,
+      category: "Actualités",
+      categoryLevel: 1,
+      questType: "form",
+      form: [("lien de l'emploi du temps", "???")],
+      regularity: null,
+    );
+
+    final List<Quest> allQuests = [
+      quest,
+      quest,
+      quest,
+      quest,
+      quest2,
+      quest2,
+      queteRU,
+      questNews,
+    ];
     final Map<String, String> categoriesDescriptions = {
+      "Quêtes Récurrentes":
+          "Des quêtes jounalière, hebdomadaire ou qui reviennent régulièrement et te permettent de gagner des points et obtenir des infos",
+      "Actualités": "Des quêtes qui viennent d'arriver à ne pas rater !",
       "Exploration":
           "Rends-toi dans des lieux utiles, inattendus, secrets ou insolites...",
       "Pro du numérique":
           "Utilise des outils numériques pour t'aider dans ta vie étudiante...",
+      "Vie étudiantes":
+          "Des quêtes pour t'inciter à participer la vie étudiante rennaise",
     };
 
     final Map<String, List<Quest>> questsByCategorie = allQuests.fold(
@@ -62,6 +114,10 @@ class HomePage extends StatelessWidget {
         acc[quest.category]!.add(quest);
         return acc;
       },
+    );
+
+    questsByCategorie["Quêtes Récurrentes"]!.sort(
+      (a, b) => a.regularity!.inSeconds.compareTo(b.regularity!.inSeconds),
     );
 
     return SingleChildScrollView(

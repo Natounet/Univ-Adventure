@@ -13,6 +13,7 @@ class Quest {
   final String category;
   final int categoryLevel;
   final String questType;
+  final Duration? regularity;
 
   Quest({
     required this.questId,
@@ -24,6 +25,7 @@ class Quest {
     required this.category,
     required this.categoryLevel,
     required this.questType,
+    required this.regularity,
   });
 
   factory Quest.fromJson(Map<String, dynamic> json) {
@@ -37,6 +39,9 @@ class Quest {
       category: json["category"],
       categoryLevel: json["category_level"],
       questType: json["questType"],
+      regularity: json["regularity"] != null
+          ? Duration(seconds: json["regularity"])
+          : null,
     );
   }
 
@@ -51,6 +56,7 @@ class Quest {
       "category": category,
       "category_level": categoryLevel,
       "questType": questType,
+      "regularity": regularity?.inSeconds,
     };
   }
 }
@@ -69,6 +75,7 @@ class QuestLocation extends Quest {
     required String category,
     required int categoryLevel,
     required String questType,
+    required Duration? regularity,
     required this.location,
     required this.imagePath, // Add this line
   }) : super(
@@ -81,6 +88,7 @@ class QuestLocation extends Quest {
           category: category,
           categoryLevel: categoryLevel,
           questType: questType,
+          regularity: regularity,
         );
 
   factory QuestLocation.fromJson(Map<String, dynamic> json) {
@@ -96,6 +104,9 @@ class QuestLocation extends Quest {
       location: Location.fromJson(json["location"]),
       imagePath: json["imagePath"], // Add this line
       questType: json["questType"],
+      regularity: json["regularity"] != null
+          ? Duration(seconds: json["regularity"])
+          : null,
     );
   }
 
@@ -112,6 +123,7 @@ class QuestLocation extends Quest {
       "location": location.toJson(),
       "imagePath": imagePath, // Add this line
       "questType": questType,
+      "regularity": regularity?.inSeconds,
     };
   }
 }
@@ -129,6 +141,7 @@ class QuestQR extends Quest {
     required String category,
     required int categoryLevel,
     required String questType,
+    required Duration? regularity,
     required this.qrCode,
   }) : super(
           questId: questId,
@@ -140,6 +153,7 @@ class QuestQR extends Quest {
           category: category,
           categoryLevel: categoryLevel,
           questType: questType,
+          regularity: regularity,
         );
 
   factory QuestQR.fromJson(Map<String, dynamic> json) {
@@ -154,6 +168,9 @@ class QuestQR extends Quest {
       categoryLevel: json["category_level"],
       qrCode: json["qrCode"],
       questType: json["questType"],
+      regularity: json["regularity"] != null
+          ? Duration(seconds: json["regularity"])
+          : null,
     );
   }
 }
@@ -171,6 +188,7 @@ class QuestForm extends Quest {
     required String category,
     required int categoryLevel,
     required String questType,
+    required Duration? regularity,
     required this.form,
   }) : super(
           questId: questId,
@@ -182,6 +200,7 @@ class QuestForm extends Quest {
           category: category,
           categoryLevel: categoryLevel,
           questType: questType,
+          regularity: regularity,
         );
 
   factory QuestForm.fromJson(Map<String, dynamic> json) {
@@ -200,6 +219,9 @@ class QuestForm extends Quest {
       categoryLevel: json["category_level"],
       form: form,
       questType: json["questType"],
+      regularity: json["regularity"] != null
+          ? Duration(seconds: json["regularity"])
+          : null,
     );
   }
 }

@@ -6,6 +6,8 @@ import 'package:univ_adventure/models/location.dart';
 import 'package:univ_adventure/models/quest.dart';
 import 'package:univ_adventure/services/user_manager.dart';
 
+import '../../models/categorie.dart';
+
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
@@ -19,7 +21,7 @@ class HomePage extends StatelessWidget {
           "Près de l'ISTIC et du batiment 12D ce trouve un petit lac artificiel très sympa.\nRends-y toi et active ta localisation pour valider la quête.",
       iconPath: "https://docs.flutter.dev/assets/images/dash/dash-fainting.gif",
       xp: 300,
-      category: "Exploration",
+      category: Category.exploration,
       categoryLevel: 1,
       questType: "exploration",
       location: const Location(
@@ -40,7 +42,7 @@ class HomePage extends StatelessWidget {
           "Rends-toi sur l'ENT de l'Université de Rennes, va dans ton emploi du temps, et récupère le lien de tes cours. Puis, télécharge une application comme TimeCalendar, et importe ton emploi du temps. Colle le lien de tes cours ici pour valider la quête.",
       iconPath: "https://docs.flutter.dev/assets/images/dash/dash-fainting.gif",
       xp: 300,
-      category: "Pro du numérique",
+      category: Category.proDuNumerique,
       categoryLevel: 1,
       questType: "form",
       form: [("lien de l'emploi du temps", "???")],
@@ -55,7 +57,7 @@ class HomePage extends StatelessWidget {
           "Rends-toi au RU et mange un bon repas. Active ta localisation pour valider la quête.",
       iconPath: "https://docs.flutter.dev/assets/images/dash/dash-fainting.gif",
       xp: 300,
-      category: "Quêtes Récurrentes",
+      category: Category.quetesRecurrentes,
       categoryLevel: 1,
       questType: "form",
       location: const Location(
@@ -76,7 +78,7 @@ class HomePage extends StatelessWidget {
           "Rends-toi sur le site du diapason, et récupère le lien de la programmation. Colle le lien ici pour valider la quête.",
       iconPath: "https://docs.flutter.dev/assets/images/dash/dash-fainting.gif",
       xp: 300,
-      category: "Actualités",
+      category: Category.actualites,
       categoryLevel: 1,
       questType: "form",
       form: [("lien de l'emploi du temps", "???")],
@@ -93,39 +95,17 @@ class HomePage extends StatelessWidget {
       queteRU,
       questNews,
     ];
-    final Map<String, String> categoriesDescriptions = {
-      "Quêtes Récurrentes":
-          "Des quêtes jounalière, hebdomadaire ou qui reviennent régulièrement et te permettent de gagner des points et obtenir des infos",
-      "Actualités": "Des quêtes qui viennent d'arriver à ne pas rater !",
-      "Exploration":
-          "Rends-toi dans des lieux utiles, inattendus, secrets ou insolites...",
-      "Pro du numérique":
-          "Utilise des outils numériques pour t'aider dans ta vie étudiante...",
-      "Vie étudiantes":
-          "Des quêtes pour t'inciter à participer la vie étudiante rennaise",
-    };
 
-    final Map<String, List<Quest>> questsByCategorie = allQuests.fold(
-      <String, List<Quest>>{},
-      (Map<String, List<Quest>> acc, Quest quest) {
-        if (acc[quest.category] == null) {
-          acc[quest.category] = [];
-        }
-        acc[quest.category]!.add(quest);
-        return acc;
-      },
-    );
-
-    questsByCategorie["Quêtes Récurrentes"]!.sort(
-      (a, b) => a.regularity!.inSeconds.compareTo(b.regularity!.inSeconds),
-    );
+    final List<Category> categories =
+        allQuests.map((e) => e.category).toSet().toList();
+    categories.sort();
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start, // Add this line
         children: [
-          for (final category in questsByCategorie.keys)
+          for (final category in categories)
             Column(
               crossAxisAlignment: CrossAxisAlignment.start, // Add this line
               children: [
@@ -133,7 +113,7 @@ class HomePage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start, // Add this line
                   children: [
                     Text(
-                      category,
+                      category.name,
                       textAlign: TextAlign.left,
                       style: const TextStyle(
                         fontSize: 15.0,
@@ -141,7 +121,7 @@ class HomePage extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      categoriesDescriptions[category] ?? "",
+                      category.description,
                       style: const TextStyle(fontSize: 11.0),
                     ),
                     const Divider(),
@@ -151,7 +131,9 @@ class HomePage extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: [
-                      for (final quest in questsByCategorie[category]!)
+                      for (final quest in allQuests
+                          .where((e) => e.category == category)
+                          .toList())
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: QuestMiniature(quest: quest),

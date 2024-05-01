@@ -1,7 +1,6 @@
 import "package:cloud_firestore/cloud_firestore.dart";
-import "package:flutter/material.dart";
+import "package:univ_adventure/models/categorie.dart";
 import "package:univ_adventure/models/location.dart";
-import "package:tuple/tuple.dart";
 
 class Quest {
   final String questId;
@@ -10,7 +9,7 @@ class Quest {
   final String subtitle;
   final String description;
   final String iconPath;
-  final String category;
+  final Category category;
   final int categoryLevel;
   final String questType;
   final Duration? regularity;
@@ -36,7 +35,7 @@ class Quest {
       subtitle: json["subtitle"],
       description: json["description"],
       iconPath: json["icon"],
-      category: json["category"],
+      category: Category.fromJson(json["category"]),
       categoryLevel: json["category_level"],
       questType: json["questType"],
       regularity: json["regularity"] != null
@@ -53,7 +52,7 @@ class Quest {
       "subtitle": subtitle,
       "description": description,
       "icon": iconPath,
-      "category": category,
+      "category": category.toJson(),
       "category_level": categoryLevel,
       "questType": questType,
       "regularity": regularity?.inSeconds,
@@ -72,7 +71,7 @@ class QuestLocation extends Quest {
     required String subtitle,
     required String description,
     required String iconPath,
-    required String category,
+    required Category category,
     required int categoryLevel,
     required String questType,
     required Duration? regularity,
@@ -99,7 +98,7 @@ class QuestLocation extends Quest {
       subtitle: json["subtitle"],
       description: json["description"],
       iconPath: json["icon"],
-      category: json["category"],
+      category: Category.fromJson(json["category"]),
       categoryLevel: json["category_level"],
       location: Location.fromJson(json["location"]),
       imagePath: json["imagePath"], // Add this line
@@ -110,6 +109,7 @@ class QuestLocation extends Quest {
     );
   }
 
+  @override
   Map<String, dynamic> toJson() {
     return {
       "questId": questId,
@@ -118,7 +118,7 @@ class QuestLocation extends Quest {
       "subtitle": subtitle,
       "description": description,
       "icon": iconPath,
-      "category": category,
+      "category": category.toJson(),
       "category_level": categoryLevel,
       "location": location.toJson(),
       "imagePath": imagePath, // Add this line
@@ -138,7 +138,7 @@ class QuestQR extends Quest {
     required String subtitle,
     required String description,
     required String iconPath,
-    required String category,
+    required Category category,
     required int categoryLevel,
     required String questType,
     required Duration? regularity,
@@ -164,7 +164,7 @@ class QuestQR extends Quest {
       subtitle: json["subtitle"],
       description: json["description"],
       iconPath: json["icon"],
-      category: json["category"],
+      category: Category.fromJson(json["category"]),
       categoryLevel: json["category_level"],
       qrCode: json["qrCode"],
       questType: json["questType"],
@@ -185,7 +185,7 @@ class QuestForm extends Quest {
     required String subtitle,
     required String description,
     required String iconPath,
-    required String category,
+    required Category category,
     required int categoryLevel,
     required String questType,
     required Duration? regularity,

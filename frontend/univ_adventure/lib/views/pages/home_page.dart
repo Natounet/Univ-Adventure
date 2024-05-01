@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:univ_adventure/components/QuestMiniature.dart';
 import 'package:univ_adventure/components/quest_card_location.dart';
 import 'package:univ_adventure/models/location.dart';
@@ -139,24 +141,38 @@ class HomePage extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start, // Add this line
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start, // Add this line
+                Row(
                   children: [
-                    Text(
-                      category.name,
-                      textAlign: TextAlign.left,
-                      style: const TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment:
+                            CrossAxisAlignment.start, // Add this line
+                        children: [
+                          Text(
+                            category.name,
+                            textAlign: TextAlign.left,
+                            style: const TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            category.description,
+                            style: const TextStyle(fontSize: 14.0),
+                          ),
+                        ],
                       ),
                     ),
-                    Text(
-                      category.description,
-                      style: const TextStyle(fontSize: 14.0),
-                    ),
-                    const Divider(),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Icon(
+                        LucideIcons.moveHorizontal,
+                        color: Colors.grey,
+                      ),
+                    )
                   ],
                 ),
+                const Divider(),
                 // ShaderMask permet de faire un dégradé vers le transparent sur le bord droit de la liste
                 ShaderMask(
                   shaderCallback: (Rect rect) {
@@ -192,6 +208,9 @@ class HomePage extends StatelessWidget {
                     ),
                   ),
                 ),
+                const SizedBox(
+                  height: 30,
+                )
               ],
             )
         ],

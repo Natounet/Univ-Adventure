@@ -26,25 +26,6 @@ class UserAuthState extends State<UserAuth> {
     );
   }
 
-  Future<void> _attemptSignup() async {
-    if (!_formKey.currentState!.validate()) {
-      return;
-    }
-    try {
-      UserCredential userCredential =
-          await _auth.createUserWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
-      );
-      if (userCredential.user != null) {
-        await _handleUserCredential(userCredential);
-        _showSnackBar('Inscription réussie', backgroundColor: Colors.green);
-      }
-    } on FirebaseAuthException catch (e) {
-      _showSnackBar('Erreur d\'inscription: ${e.message}');
-    }
-  }
-
   Future<void> _handleUserCredential(UserCredential userCredential) async {
     String userId = userCredential.user!.uid;
 
@@ -163,16 +144,16 @@ class UserAuthState extends State<UserAuth> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           ElevatedButton(
-                            onPressed: () => _attemptSignup(),
-                            style: ElevatedButton.styleFrom(
-                                minimumSize: const Size(140, 50)),
-                            child: const Text('S\'inscrire'),
-                          ),
-                          ElevatedButton(
                             onPressed: () => _attemptLogin(),
                             style: ElevatedButton.styleFrom(
                                 minimumSize: const Size(140, 50)),
                             child: const Text('Se connecter'),
+                          ),
+                          ElevatedButton(
+                            onPressed: () => context.go("/signup"),
+                            style: ElevatedButton.styleFrom(
+                                minimumSize: const Size(140, 50)),
+                            child: const Text("Je n'ai pas de compte"),
                           ),
                         ],
                       ),

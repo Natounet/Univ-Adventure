@@ -26,6 +26,7 @@ dependencies:
   go_router: ^13.2.4
   lucide_icons: ^0.257.0
   tuple: ^2.0.2
+  string_validator: ^1.0.2
 
 dev_dependencies:
   flutter_test:

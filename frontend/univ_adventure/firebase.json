@@ -1,1 +1,50 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"univadventure","appId":"1:855471216767:android:7b2fe5a41908f21613074a","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"univadventure","configurations":{"android":"1:855471216767:android:7b2fe5a41908f21613074a","ios":"1:855471216767:ios:f673052e6651d54d13074a","macos":"1:855471216767:ios:f673052e6651d54d13074a","web":"1:855471216767:web:4615fce9daf0d01d13074a","windows":"1:855471216767:web:c62a340100bdd5b713074a"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "univadventure",
+          "appId": "1:855471216767:android:7b2fe5a41908f21613074a",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "univadventure",
+          "configurations": {
+            "android": "1:855471216767:android:7b2fe5a41908f21613074a",
+            "ios": "1:855471216767:ios:f673052e6651d54d13074a",
+            "macos": "1:855471216767:ios:f673052e6651d54d13074a",
+            "web": "1:855471216767:web:4615fce9daf0d01d13074a",
+            "windows": "1:855471216767:web:c62a340100bdd5b713074a"
+          }
+        }
+      }
+    }
+  },
+  "emulators": {
+    "auth": {
+      "port": 9099
+    },
+    "functions": {
+      "port": 5001
+    },
+    "firestore": {
+      "port": 8080
+    },
+    "storage": {
+      "port": 9199
+    },
+    "ui": {
+      "enabled": true
+    },
+    "singleProjectMode": true
+  },
+  "storage": {
+    "rules": "storage.rules"
+  },
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  }
+}

@@ -1,11 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:univ_adventure/models/location.dart';
 import 'package:univ_adventure/models/quest.dart';
+import 'package:univ_adventure/views/pages/auth/sign_in_or_up.dart';
 
 import 'package:univ_adventure/views/pages/home_page.dart';
-import 'package:univ_adventure/views/pages/sign_up.dart';
-import 'package:univ_adventure/views/pages/user_auth.dart';
+import 'package:univ_adventure/views/pages/auth/sign_up.dart';
+import 'package:univ_adventure/views/pages/auth/user_auth.dart';
 import 'package:univ_adventure/views/pages/profile.dart';
 
 import 'services/user_manager.dart'; // Assurez-vous d'importer la classe UserManager correctement
@@ -18,8 +21,9 @@ final _router = GoRouter(
   routes: [
     GoRoute(
       path: "/",
-      builder: (context, state) =>
-          UserManager.getUserID() == null ? const UserAuth() : const HomePage(),
+      builder: (context, state) => UserManager.getUserID() == null
+          ? const SignInOrUp()
+          : const HomePage(),
     ),
     ShellRoute(
       builder: (context, state, child) => Scaffold(
@@ -72,17 +76,12 @@ final _router = GoRouter(
       ],
     ),
     GoRoute(
-      path: "/auth",
+      path: "/auth/sign-in",
       builder: (context, state) => const UserAuth(),
     ),
     GoRoute(
-      path: "/signup",
-      builder: (context, state) {
-        return SignupPage(
-          userID: state.uri.queryParameters['userID']!,
-          userEmail: state.uri.queryParameters['userEmail']!,
-        );
-      },
+      path: "/auth/sign-up",
+      builder: (context, state) => SignupPage(),
     ),
     GoRoute(
       path: "/profile",
@@ -98,6 +97,10 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
+
+  FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
 
   runApp(MyApp());
 }

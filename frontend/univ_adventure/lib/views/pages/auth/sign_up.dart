@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
@@ -34,12 +35,10 @@ class _SignupPageState extends State<SignupPage> {
     }
     final sanitizedUsername = trim(escape(username));
 
-    print("$email, $password");
     UserCredential creds = await FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: password)
         .catchError(
       (error) {
-        print(error);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Erreur lors de la création du compte : $error'),
@@ -50,7 +49,7 @@ class _SignupPageState extends State<SignupPage> {
     );
 
     if (creds.user != null) {
-      await FirebaseFirestore.instance.collection('users').add({
+      FirebaseDatabase.instance.ref().child("users/${creds.user!.uid}").set({
         'userID': creds.user!.uid,
         'email': sanitizedEmail,
         'username': sanitizedUsername,

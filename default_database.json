@@ -1,0 +1,69 @@
+{
+    "users": {},
+    "categories": {
+        "exploration": {
+            "id": 0,
+            "name": "Exploration",
+            "description": "Découvre des lieux  de l'université et leurs anecdotes",
+            "orderOnHomePage": 2
+        },
+        "recurrente": {
+            "id": 1,
+            "name": "Quete récurrente",
+            "description": "Reviens tout les jours valider tes quêtes réccurentes !",
+            "orderOnHomePage": 0
+        },
+        "actualités": {
+            "id": 2,
+            "name": "Actualités",
+            "description": "Des quêtes qui viennent d'arriver à ne pas rater",
+            "orderOnHomePage": 1
+        }
+    },
+    "quests": [
+        {
+            "questId": 1,
+            "title": "Lac au connard",
+            "xp": 300,
+            "subtitle": "Rends-toi au lac au connard.. canard !",
+            "description": "Près de l'ISTIC et du batiment 12D ce trouve un petit lac artificiel très sympa. Rends-y toi et active ta localisation pour valider la quête.",
+            "icon": "https://docs.flutter.dev/assets/images/dash/dash-fainting.gif",
+            "categoryID": 0,
+            "categoryLevel": 1,
+            "unlockLevel": 0,
+            "regularity": null,
+            "validationConditions": [
+                {
+                    "condition_type": "location",
+                    "location": {
+                        "name": "Lac aux connards",
+                        "latitude": 48.7992685,
+                        "longitude": -3.4177042
+                    }
+                }
+            ]
+        },
+        {
+            "questId": 2,
+            "title": "Ton EDT",
+            "xp": 300,
+            "subtitle": "Met ton emploi du temps dans ton téléphone !",
+            "description": "Rends-toi sur l'ENT de l'Université de Rennes, va dans ton emploi du temps, et récupère le lien de tes cours. Puis, télécharge une application comme TimeCalendar, et importe ton emploi du temps. Colle le lien de tes cours ici pour valider la quête.",
+            "icon": "https://docs.flutter.dev/assets/images/dash/dash-fainting.gif",
+            "categoryID": 0,
+            "categoryLevel": 1,
+            "unlockLevel": 0,
+            "regularity": null,
+            "validationConditions": [
+                {
+                    "condition_type": "location",
+                    "location": {
+                        "name": "Lac aux connards",
+                        "latitude": 48.7992685,
+                        "longitude": -3.4177042
+                    }
+                }
+            ]
+        }
+    ]
+}

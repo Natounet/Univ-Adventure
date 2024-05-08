@@ -1,7 +1,11 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:univ_adventure/components/QuestMiniature.dart';
 import 'package:univ_adventure/components/quest_card_location.dart';
@@ -9,128 +13,69 @@ import 'package:univ_adventure/models/location.dart';
 import 'package:univ_adventure/models/quest.dart';
 import 'package:univ_adventure/services/user_manager.dart';
 
-import '../../models/categorie.dart';
+import '../../models/category.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  List<Category> categories = [];
+  List<Quest> allQuests = [];
+
+  void fetchCategories() async {
+    DataSnapshot snapshot = await FirebaseDatabase.instance
+        .ref()
+        .child(
+          "categories",
+        )
+        .get()
+        .catchError((e) => print("Erreur $e"));
+
+    Map<String, dynamic> categoriesData =
+        Map<String, dynamic>.from(snapshot.value as Map<Object?, Object?>);
+    setState(() {
+      categories = categoriesData.entries
+          .map(
+            (e) => Category.fromJson(
+              Map<String, dynamic>.from(e.value as Map<Object?, Object?>),
+            ),
+          )
+          .toList();
+    });
+  }
+
+  void fetchQuests() async {
+    DataSnapshot snapshot = await FirebaseDatabase.instance
+        .ref()
+        .child(
+          "quests",
+        )
+        .get()
+        .catchError((e) => print("Erreur $e"));
+
+    setState(() {
+      allQuests = snapshot.children
+          .map(
+            (e) => Quest.fromDatabase(e),
+          )
+          .toList();
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchCategories();
+    fetchQuests();
+  }
 
   @override
   Widget build(BuildContext context) {
     int currentLevel = 0;
-
-    final QuestLocation quest = QuestLocation(
-      questId: "1",
-      title: "Lac au connard",
-      subtitle: "Rends-toi au lac au connard.. canard !",
-      description:
-          "Près de l'ISTIC et du batiment 12D ce trouve un petit lac artificiel très sympa.\nRends-y toi et active ta localisation pour valider la quête.",
-      iconPath: "https://docs.flutter.dev/assets/images/dash/dash-fainting.gif",
-      xp: 300,
-      category: Category.exploration,
-      categoryLevel: 1,
-      questType: "exploration",
-      location: const Location(
-        name: "lac-aux-connards",
-        latitude: 48.115332,
-        longitude: -1.637858,
-      ),
-      imagePath:
-          "https://docs.flutter.dev/assets/images/dash/dash-fainting.gif",
-      unlockLevel: 0,
-      regularity: null,
-    );
-
-    final QuestForm quest2 = QuestForm(
-      questId: "2",
-      title: "Ton EDT",
-      subtitle: "Met ton emploi du temps dans ton téléphone !",
-      description:
-          "Rends-toi sur l'ENT de l'Université de Rennes, va dans ton emploi du temps, et récupère le lien de tes cours. Puis, télécharge une application comme TimeCalendar, et importe ton emploi du temps. Colle le lien de tes cours ici pour valider la quête.",
-      iconPath: "https://docs.flutter.dev/assets/images/dash/dash-fainting.gif",
-      xp: 300,
-      category: Category.proDuNumerique,
-      categoryLevel: 1,
-      questType: "form",
-      form: [("lien de l'emploi du temps", "???")],
-      unlockLevel: 0,
-      regularity: null,
-    );
-
-    final QuestLocation queteRU = QuestLocation(
-      questId: "2",
-      title: "Mange au RU",
-      subtitle: "Rends-toi au RU et mange un bon repas !",
-      description:
-          "Rends-toi au RU et mange un bon repas. Active ta localisation pour valider la quête.",
-      iconPath: "https://docs.flutter.dev/assets/images/dash/dash-fainting.gif",
-      xp: 300,
-      category: Category.quetesRecurrentes,
-      categoryLevel: 1,
-      questType: "form",
-      location: const Location(
-        name: "RU Astrolabe",
-        latitude: 48.115332,
-        longitude: -1.637858,
-      ),
-      imagePath:
-          "https://docs.flutter.dev/assets/images/dash/dash-fainting.gif",
-      unlockLevel: 0,
-      regularity: const Duration(days: 1),
-    );
-
-    final QuestForm questNews = QuestForm(
-      questId: "2",
-      title: "Programme Diapason !",
-      subtitle: "La programmation du diapason est sortie, va la lire !",
-      description:
-          "Rends-toi sur le site du diapason, et récupère le lien de la programmation. Colle le lien ici pour valider la quête.",
-      iconPath: "https://docs.flutter.dev/assets/images/dash/dash-fainting.gif",
-      xp: 300,
-      category: Category.actualites,
-      categoryLevel: 1,
-      questType: "form",
-      form: [("lien de l'emploi du temps", "???")],
-      unlockLevel: 0,
-      regularity: null,
-    );
-
-    final QuestLocation questNiveau2 = QuestLocation(
-      questId: "1",
-      title: "Le Héron",
-      subtitle: "Rends-toi au lac au connard.. canard !",
-      description:
-          "Près de l'ISTIC et du batiment 12D ce trouve un petit lac artificiel très sympa.\nRends-y toi et active ta localisation pour valider la quête.",
-      iconPath: "https://docs.flutter.dev/assets/images/dash/dash-fainting.gif",
-      xp: 300,
-      category: Category.exploration,
-      categoryLevel: 1,
-      questType: "exploration",
-      location: const Location(
-        name: "lac-aux-connards",
-        latitude: 48.115332,
-        longitude: -1.637858,
-      ),
-      imagePath:
-          "https://docs.flutter.dev/assets/images/dash/dash-fainting.gif",
-      unlockLevel: 1,
-      regularity: null,
-    );
-
-    final List<Quest> allQuests = [
-      quest,
-      quest,
-      quest,
-      quest,
-      quest2,
-      quest2,
-      queteRU,
-      questNews,
-      questNiveau2,
-    ];
-
-    final List<Category> categories =
-        allQuests.map((e) => e.category).toSet().toList();
-    categories.sort();
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(8.0),
@@ -195,7 +140,7 @@ class HomePage extends StatelessWidget {
                     child: Row(
                       children: [
                         for (final quest in allQuests
-                            .where((e) => e.category == category)
+                            .where((e) => e.categoryID == category.id)
                             .toList())
                           Padding(
                             padding: const EdgeInsets.all(8.0),

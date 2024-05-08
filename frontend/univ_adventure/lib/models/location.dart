@@ -1,27 +1,31 @@
-class Location {
+import 'package:latlong2/latlong.dart';
+
+class Lieu {
   final String name;
-  final double latitude;
-  final double longitude;
+  final LatLng coordinates;
 
-  const Location({
-    required this.name,
-    required this.latitude,
-    required this.longitude,
-  });
+  const Lieu({required this.name, required this.coordinates});
 
-  factory Location.fromJson(Map<String, dynamic> json) {
-    return Location(
+  factory Lieu.fromJson(Map<String, dynamic> json) {
+    return Lieu(
       name: json['name'],
-      latitude: json['latitude'],
-      longitude: json['longitude'],
+      coordinates: LatLng(json['latitude'], json['longitude']),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'name': name,
-      'latitude': latitude,
-      'longitude': longitude,
+      'latitude': coordinates.latitude,
+      'longitude': coordinates.longitude,
     };
+  }
+
+  bool haveSameCoords(Lieu other, {double toleranceMeters = 10}) {
+    const calculator = Distance(roundResult: false);
+    return calculator
+            .as(LengthUnit.Meter, other.coordinates, coordinates)
+            .abs() <
+        toleranceMeters;
   }
 }

@@ -1,9 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:univ_adventure/models/location.dart';
-import 'package:univ_adventure/models/quest.dart';
 import 'package:univ_adventure/views/pages/auth/sign_in_or_up.dart';
 
 import 'package:univ_adventure/views/pages/home_page.dart';
@@ -17,13 +17,14 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'firebase_options.dart';
 
+import 'dart:io' show Platform;
+
 final _router = GoRouter(
   routes: [
     GoRoute(
       path: "/",
-      builder: (context, state) => UserManager.getUserID() == null
-          ? const SignInOrUp()
-          : const HomePage(),
+      redirect: (BuildContext context, GoRouterState state) =>
+          UserManager.getUserID() == null ? "/auth/sign-in-or-up" : "/home",
     ),
     ShellRoute(
       builder: (context, state, child) => Scaffold(
@@ -76,6 +77,10 @@ final _router = GoRouter(
       ],
     ),
     GoRoute(
+      path: "/auth/sign-in-or-up",
+      builder: (context, state) => const SignInOrUp(),
+    ),
+    GoRoute(
       path: "/auth/sign-in",
       builder: (context, state) => const UserAuth(),
     ),
@@ -94,13 +99,19 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await UserManager.initialize();
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  } catch (e) {
+    print("Erreur lors de l'initialisation de Firebase : $e");
+  }
 
-  await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
-
-  FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
+  // Changer l'adresse IP en fonction de votre pc :
+  final host = !kIsWeb && Platform.isAndroid ? "192.168.1.33" : "127.0.0.1";
+  FirebaseDatabase.instance.useDatabaseEmulator(host, 9000);
+  await FirebaseAuth.instance.useAuthEmulator(host, 9099);
+  FirebaseStorage.instance.useStorageEmulator(host, 9199);
 
   runApp(MyApp());
 }

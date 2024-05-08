@@ -1,4 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:go_router/go_router.dart';
@@ -29,23 +31,17 @@ class UserAuthState extends State<UserAuth> {
   Future<void> _handleUserCredential(UserCredential userCredential) async {
     String userId = userCredential.user!.uid;
 
-    final QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
-        .instance
-        .collection('users')
-        .where('userID', isEqualTo: userId)
-        .get();
+    var snapshot =
+        await FirebaseDatabase.instance.ref().child("users/$userId").get();
 
-    if (snapshot.docs.isNotEmpty) {
+    if (snapshot != null) {
       UserManager.addUserID(userId);
       if (mounted) {
         context.go("/home");
       }
     } else {
-      if (mounted) {
-        context.go(
-          "/signup?userID=$userId&userEmail=${userCredential.user!.email}",
-        );
-      }
+      _showSnackBar(
+          'Erreur lors de la récupération des informations utilisateur');
     }
   }
 
